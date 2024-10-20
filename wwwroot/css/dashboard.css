@@ -960,10 +960,12 @@ input[type=text] {
 }
 .export .search-holder svg{
     position: absolute;
+
     left: 10px;
 }
 .export button {
-    background-color: #C6C6C6;
+    background-color: var(--accent);
+    color: white;
     padding: 7px 20px;
     border-radius: 15px;
     border: none;
@@ -1003,7 +1005,7 @@ input[type=text] {
 }
 .exportFilter {
     width: 345px;
-    height: 442px;
+    height: 520px;
     border-radius: 20px;
     position: absolute;
     right: 70px;
