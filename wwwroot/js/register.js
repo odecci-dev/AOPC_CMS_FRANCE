@@ -33,9 +33,10 @@ async function userRegistrationListTableLayout() {
         "bInfo": false,
         "bAutoWidth": false,
         "bLengthChange": false,
-        "aLengthMenu": [7],
-        "searching": false,
-        "oLanguage": { "sZeroRecords": "", "sEmptyTable": "" }
+        "paging": false,
+        "aLengthMenu": [10],
+        "searching": false
+        , "oLanguage": { "sZeroRecords": "", "sEmptyTable": "" }
     });
 
     regtable = $('#register-table').DataTable({
