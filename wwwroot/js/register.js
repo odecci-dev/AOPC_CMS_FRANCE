@@ -11,6 +11,19 @@ var spanval = 0;
 
 async function userRegistrationListTableLayout() {
     corusertable = $('#corporate-user-table').DataTable({
+        "columnDefs": [
+
+            { "width": "150px", "targets": 0 },
+            { "width": "150px", "targets": 1 },
+            { "width": "150px", "targets": 2 },
+            { "width": "200px", "targets": 3 },
+            { "width": "200px", "targets": 4 },
+            { "width": "200px", "targets": 5 },
+            { "width": "200px", "targets": 6 },
+            { "width": "150px", "targets": 7 }
+            // { "width": "70px", "targets": 9 }
+        ],
+        "deferRender": true,
         "bPaginate": false,
         "bFilter": false,
         "stripeClasses": [],
