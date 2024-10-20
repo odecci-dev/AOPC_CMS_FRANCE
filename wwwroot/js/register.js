@@ -394,8 +394,19 @@ async function getUserRegistration() {
             console.log(data[0].items.length);
             console.log(data[0]);
             regtable.clear().draw();
+
+            
+
+
+
             for (var i = 0; i < data[0].items.length; i++) {
                 var img = data[0].items[i].filePath;
+                if (data[0].items[i].isVIP == 1) {
+                    data[0].items[i].isVIP = "Yes";
+                }
+                else {
+                    data[0].items[i].isVIP = "No";
+                }
                 if (img == "") {
                     img = "https://www.alfardanoysterprivilegeclub.com/assets/img/defaultavatar.png";
                 } else {
@@ -514,6 +525,12 @@ async function getCorporateRegistration() {
             corusertable.clear().draw();
             for (var i = 0; i < data.length; i++) {
                 var img = data[i].filePath;
+                if (data[i].isVIP == 1) {
+                    data[i].isVIP = "Yes";
+                }
+                else {
+                    data[i].isVIP = "No";
+                }
                 if (img == "") {
                     img = "https://www.alfardanoysterprivilegeclub.com/assets/img/defaultavatar.png";
                 } else {
@@ -586,7 +603,11 @@ async function getCorporateRegistration() {
                     '<td><p>' + data[i].corporatename + '</p></td>',
                     '<td><p>' + data[i].position + '</p></td>',
                     '<td><p>' + data[i].status + '</p></td>',
+
+
                     '<td><p>' + data[i].isVIP + '</p></td>',
+
+
                     '<td><p>' + data[i].dateCreated + '</p></td>'
                 ]);
 
