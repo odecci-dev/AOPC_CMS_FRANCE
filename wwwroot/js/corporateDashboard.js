@@ -1,7 +1,7 @@
 ﻿async function corporateUserCount() {
     var data = {};
     data.userName = username;
-    console.log(data);
+    //console.log(data);
     //console.log(data);
     $.ajax({
         url: '/Dashboard/GetAllUserCount',
@@ -9,7 +9,7 @@
         type: "POST",
         datatype: "json",
         success: function (data) {
-            console.log(data);
+            //console.log(data);
             for (var i = 0; i < data.length; i++) {
                 document.getElementById('registered_employee').innerHTML = data[i].registered;
                 document.getElementById('unregistered_employee').innerHTML = data[i].unregistered;
@@ -97,9 +97,9 @@ async function topRestoFilter() {
                         oldValue += value.totalVisit;
                     });
                     //  console.log(styleString);
-                    document
-                        .querySelector(`${elementContainer}`)
-                        .setAttribute("style", `background: conic-gradient(${styleString}#D3D3D3 0 0%)`);
+                    //document
+                    //    .querySelector(`${elementContainer}`)
+                        //.setAttribute("style", `background: conic-gradient(${styleString}#D3D3D3 0 0%)`);
                 };
 
                 const populateInfo = (elementContainer, data) => {
@@ -136,7 +136,7 @@ async function topRestoFilter() {
 
     
 }
-async function topResto() {
+function topResto() {
     var data = {};
     data.day = $('#mcr').val();
     $.ajax({
@@ -209,9 +209,9 @@ async function topResto() {
                     oldValue += value.totalVisit;
                 });
                 //  console.log(styleString);
-                document
-                    .querySelector(`${elementContainer}`)
-                    .setAttribute("style", `background: conic-gradient(${styleString}#D3D3D3 0 0%)`);
+                //document
+                //    .querySelector(`${elementContainer}`)
+                    //.setAttribute("style", `background: conic-gradient(${styleString}#D3D3D3 0 0%)`);
             };
 
             const populateInfo = (elementContainer, data) => {
@@ -318,9 +318,9 @@ async function topHotelFilter() {
                         oldValue += value.totalVisit;
                     });
                     //console.log(styleString);
-                    document
-                        .querySelector(`${elementContainer}`)
-                        .setAttribute("style", `background: conic-gradient(${styleString}#D3D3D3 0 0%)`);
+                    //document
+                    //    .querySelector(`${elementContainer}`)
+                    //    .setAttribute("style", `background: conic-gradient(${styleString}#D3D3D3 0 0%)`);
                 };
 
                 const populateInfo = (elementContainer, data) => {
@@ -428,9 +428,9 @@ async function topHotel() {
                         oldValue += value.totalVisit;
                     });
                     //console.log(styleString);
-                    document
-                        .querySelector(`${elementContainer}`)
-                        .setAttribute("style", `background: conic-gradient(${styleString}#D3D3D3 0 0%)`);
+                    //document
+                    //    .querySelector(`${elementContainer}`)
+                    //    .setAttribute("style", `background: conic-gradient(${styleString}#D3D3D3 0 0%)`);
                 };
 
                 const populateInfo = (elementContainer, data) => {
@@ -459,7 +459,7 @@ async function topHotel() {
                     });
                 };
 
-                pieGraphMovement("#th-pie-graph", topBusinesOutlet);
+                //pieGraphMovement("#th-pie-graph", topBusinesOutlet);
 
             }
         });
@@ -681,7 +681,7 @@ async function topStore() {
                     }
                 });
             };
-            console.log(topBusinesOutlet);
+            //console.log(topBusinesOutlet);
             pieGraphMovement("#ts-pie-graph", topBusinesOutlet);
         }
     });
@@ -901,7 +901,7 @@ async function topWellness() {
                     }
                 });
             };
-            console.log(topBusinesOutlet);
+            //console.log(topBusinesOutlet);
             pieGraphMovement("#tw-pie-graph", topBusinesOutlet);
         }
     });
@@ -1121,7 +1121,7 @@ async function topOffer() {
                     }
                 });
             };
-            console.log(topBusinesOutlet);
+            //console.log(topBusinesOutlet);
             pieGraphMovement("#tof-pie-graph", topBusinesOutlet);
         }
     });

@@ -3,6 +3,22 @@ var next = 0;
 var spanval = 0;
 var currpage = "";
 
+let mytopRestoChartPie = new Chart();
+var topResto = document.getElementById("topRestoChart").getContext("2d");
+
+let mytopHotelChartPie = new Chart();
+var topHotel = document.getElementById("topHotelChart").getContext("2d");
+
+let mytopStoreChartPie = new Chart();
+var topStore = document.getElementById("topStoreChart").getContext("2d");
+
+let mytopWellnessChartPie = new Chart();
+var topWellness = document.getElementById("topWellnessChart").getContext("2d");
+
+let mytopOfferChartPie = new Chart();
+var topOffer = document.getElementById("topOfferChart").getContext("2d");
+
+
 async function companyInformationTableLayout() {
    
 
@@ -122,7 +138,7 @@ async function getComponyInformation() {
     });
     SearchComponyInformation();
 }
-function SearchComponyInformation() {
+async function SearchComponyInformation() {
   
     var pageCounter = document.querySelector("#cInformation_wrapper .current");
     pageCounter.innerHTML = currpage;
@@ -338,26 +354,64 @@ async function downloadCompanyInfortmation() {
 
         }
         else {
+            
             var data = {};
-            var corpName = document.getElementById("ciSearch").value;
-            console.log(corpName);
-            //location.replace("/Dashboard/DownloadCompanyInformationExcel?");
-            data.corporatename = corpName;
-            $.ajax({
-                url: '/Dashboard/DownloadCompanyInformationExcel',
-                type: "POST",
-                data: {
-                    data: data,
-                },
-                success: function (data) {
-                    location.replace("/Dashboard/DownloadCompanyInformationExcel");
-                    console.log("Downloaded ");
-                    
-                }
-            });
+            var registered = "false";
+            var unregistered = "false";
+            var vip = "false";
+            var userCount = "false";
+            var vipUserCount = "false";
+            var totalUserCount = "false";
+            
+            if (document.getElementById("registered").checked == true) {
+                registered = true;
+            }
+            if (document.getElementById("unregistered").checked == true) {
+                unregistered = true;
+            }
+            if (document.getElementById("vip").checked == true) {
+                vip = true;
+            }
+            
+            if (document.getElementById("userCount").checked == true) {
+                userCount = true;
+            }
+            
+            if (document.getElementById("vipUserCount").checked == true) {
+                vipUserCount = true;
+            }
+            if (document.getElementById("totalUserCount").checked == true) {
+                totalUserCount = true;
+            }
+            
+            console.log(data);
+            //data.Registered = registered;
+            //data.unregistered = unregistered;
+            //data.registeredVIP = vip;
+            //data.userCount = userCount;
+            //data.totalVIP = vipUserCount;
+            //data.totalUser = totalUserCount;
 
+            //$.ajax({
+            //    url: '/Dashboard/ExportExcelTest',
+            //    data: {
+            //        Registered: registered,
+            //        Unregistered: unregistered,
+            //        RegisteredVIP: vip,
+            //        TotalVIP: vipUserCount,
+            //        UserCount: userCount,
+            //        TotalUser: totalUserCount,
+            //    },
+            //    //type: "POST",
+            //    //datatype: "json",
+            //    success: function (data) {
+            //        //console.log("data is imported: " + data)
+            //        location.replace("/Dashboard/ExportExcelTest");
+            //    }
+            //});
+            window.location = "/Dashboard/ExportExcelTest?Registered=" + registered + "&Unregistered=" + unregistered + "&RegisteredVIP=" + vip + "&TotalVIP=" + vipUserCount + "&UserCount=" + userCount + "&TotalUser=" + totalUserCount;
 
-
+            //location.replace("/Dashboard/ExportExcelTest");
 
 
             exportFilter.style.display = "none";
@@ -365,6 +419,478 @@ async function downloadCompanyInfortmation() {
             setTimeout(function () {
                 exportFiltersuccess.style.display = "none";
             }, 5000);
+
+        }
+    });
+}
+
+async function runTopRestoChart() {
+
+    var data = {};
+    data.day = $('#mcr').val();
+    //data.day = 1;
+    $.ajax({
+        url: '/Dashboard/PostMostClickRestaurant',
+        data: {
+            data: data,
+        },
+        type: "POST",
+        datatype: "json",
+        success: function (response) {
+            //console.log(response);
+
+            var sum = 0;
+            for (var x = 3; x < response.length; x++) {
+                sum += response[x].total;
+            }
+            for (var i = 0; i < response.length; i++) {
+                document.getElementById("mcr_top1").innerHTML = "Others";
+                document.getElementById("mcr_perc1").innerHTML = sum.toFixed(2) + " %";
+
+                document.getElementById("mcr_top2").innerHTML = response[0].business;
+                document.getElementById("mcr_perc2").innerHTML = response[0].total + " %";
+
+                document.getElementById("mcr_top3").innerHTML = response[1].business;
+                document.getElementById("mcr_perc3").innerHTML = response[1].total + " %";
+
+                document.getElementById("mcr_top4").innerHTML = response[2].business;
+                document.getElementById("mcr_perc4").innerHTML = response[2].total + " %";
+
+
+            }
+
+            if (response[0].total == 0 && response[1].total == 0 && response[2].total == 0 && sum == 0) {
+                var xValues = ["No Data"];
+                var yValues = [1];
+
+                var barColors = [
+                    "#D3D3D3"
+                ];
+
+                var chartOptions = {
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false,
+                        }
+
+                    }
+
+                };
+            }
+            else {
+
+                var xValues = [response[0].business, response[1].business, response[2].business, "Others"];
+                var yValues = [response[0].total, response[1].total, response[2].total, sum];
+
+                var barColors = [
+                    "#132D28",  //Green
+                    "#8F9092",  //Gray
+                    "#AB262A",  //maroon
+                    "#c89328"   //gold
+                ];
+
+                var chartOptions = {
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+
+                    }
+
+                };
+            }
+
+            var chartData = {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            };
+            mytopRestoChartPie.destroy();
+            mytopRestoChartPie = new Chart(topResto, {
+                type: "doughnut",
+                data: chartData,
+                options: chartOptions
+            });
+
+        }
+    });
+    
+}
+async function runTopHotelChart() {
+
+    var data = {};
+    data.day = $('#mch').val();
+    //data.day = 1;
+    $.ajax({
+        url: '/Dashboard/PostMostClickedHospitality',
+        data: {
+            data: data,
+        },
+        type: "POST",
+        datatype: "json",
+        success: function (response) {
+            //console.log(response);
+
+            var sum = 0;
+            for (var x = 3; x < response.length; x++) {
+                sum += response[x].total;
+            }
+            for (var i = 0; i < response.length; i++) {
+                document.getElementById("mch_top1").innerHTML = "Others";
+                document.getElementById("mch_perc1").innerHTML = sum.toFixed(2) + " %";
+
+                document.getElementById("mch_top2").innerHTML = response[0].business;
+                document.getElementById("mch_perc2").innerHTML = response[0].total + " %";
+
+                document.getElementById("mch_top3").innerHTML = response[1].business;
+                document.getElementById("mch_perc3").innerHTML = response[1].total + " %";
+
+                document.getElementById("mch_top4").innerHTML = response[2].business;
+                document.getElementById("mch_perc4").innerHTML = response[2].total + " %";
+            }
+
+            if (response[0].total == 0 && response[1].total == 0 && response[2].total == 0 && sum == 0) {
+                var xValues = ["No Data"];
+                var yValues = [1];
+
+                var barColors = [
+                    "#D3D3D3"
+                ];
+
+                var chartOptions = {
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false,
+                        }
+
+                    }
+                }
+
+            }
+            else {
+
+                var xValues = [response[0].business, response[1].business, response[2].business, "Others"];
+                var yValues = [response[0].total, response[1].total, response[2].total, sum];
+
+                var barColors = [
+                    "#132D28",  //Green
+                    "#8F9092",  //Gray
+                    "#AB262A",  //maroon
+                    "#c89328"   //gold
+                ];
+                var chartOptions = {
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+
+                    }
+                }
+            }
+            var chartData = {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            };
+            mytopHotelChartPie.destroy();
+            mytopHotelChartPie = new Chart(topHotel, {
+                type: "doughnut",
+                data: chartData,
+                options: chartOptions
+            });
+
+        }
+    });
+}
+async function runTopStoreChart() {
+
+    var data = {};
+    data.day = $('#mcs').val();
+    //data.day = 1;
+    $.ajax({
+        url: '/Dashboard/PostMostCickStore',
+        data: {
+            data: data,
+        },
+        type: "POST",
+        datatype: "json",
+        success: function (response) {
+            //console.log(response);
+
+            var sum = 0;
+            for (var x = 3; x < response.length; x++) {
+                sum += response[x].total;
+            }
+            for (var i = 0; i < response.length; i++) {
+                document.getElementById("mcs_top1").innerHTML = "Others";
+                document.getElementById("mcs_perc1").innerHTML = sum.toFixed(2) + " %";
+
+                document.getElementById("mcs_top2").innerHTML = response[0].business;
+                document.getElementById("mcs_perc2").innerHTML = response[0].total + " %";
+
+                document.getElementById("mcs_top3").innerHTML = response[1].business;
+                document.getElementById("mcs_perc3").innerHTML = response[1].total + " %";
+
+                document.getElementById("mcs_top4").innerHTML = response[2].business;
+                document.getElementById("mcs_perc4").innerHTML = response[2].total + " %";
+            }
+
+            if (response[0].total == 0 && response[1].total == 0 && response[2].total == 0 && sum == 0) {
+                var xValues = ["No Data"];
+                var yValues = [1];
+
+                var barColors = [
+                    "#D3D3D3"
+                ];
+
+                var chartOptions = {
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false,
+                        }
+
+                    }
+                }
+
+            }
+            else {
+
+                var xValues = [response[0].business, response[1].business, response[2].business, "Others"];
+                var yValues = [response[0].total, response[1].total, response[2].total, sum];
+
+                var barColors = [
+                    "#132D28",  //Green
+                    "#8F9092",  //Gray
+                    "#AB262A",  //maroon
+                    "#c89328"   //gold
+                ];
+                var chartOptions = {
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+
+                    }
+                }
+            }
+            var chartData = {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            };
+            mytopStoreChartPie.destroy();
+            mytopStoreChartPie = new Chart(topStore, {
+                type: "doughnut",
+                data: chartData,
+                options: chartOptions
+            });
+
+        }
+    });
+}
+async function runTopWellnessChart() {
+
+    var data = {};
+    data.day = $('#mcw').val();
+    //data.day = 1;
+    $.ajax({
+        url: '/Dashboard/PostMostCickWellness',
+        data: {
+            data: data,
+        },
+        type: "POST",
+        datatype: "json",
+        success: function (response) {
+            //console.log(response);
+
+            var sum = 0;
+            for (var x = 3; x < response.length; x++) {
+                sum += response[x].total;
+            }
+            for (var i = 0; i < response.length; i++) {
+                document.getElementById("mcw_top1").innerHTML = "Others";
+                document.getElementById("mcw_perc1").innerHTML = sum.toFixed(2) + " %";
+
+                document.getElementById("mcw_top2").innerHTML = response[0].business;
+                document.getElementById("mcw_perc2").innerHTML = response[0].total + " %";
+
+                document.getElementById("mcw_top3").innerHTML = response[1].business;
+                document.getElementById("mcw_perc3").innerHTML = response[1].total + " %";
+
+                document.getElementById("mcw_top4").innerHTML = response[2].business;
+                document.getElementById("mcw_perc4").innerHTML = response[2].total + " %";
+            }
+
+            if (response[0].total == 0 && response[1].total == 0 && response[2].total == 0 && sum == 0) {
+                var xValues = ["No Data"];
+                var yValues = [1];
+
+                var barColors = [
+                    "#D3D3D3"
+                ];
+
+                var chartOptions = {
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false,
+                        }
+
+                    }
+                }
+
+            }
+            else {
+
+                var xValues = [response[0].business, response[1].business, response[2].business, "Others"];
+                var yValues = [response[0].total, response[1].total, response[2].total, sum];
+
+                var barColors = [
+                    "#132D28",  //Green
+                    "#8F9092",  //Gray
+                    "#AB262A",  //maroon
+                    "#c89328"   //gold
+                ];
+                var chartOptions = {
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+
+                    }
+                }
+            }
+            var chartData = {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            };
+            mytopWellnessChartPie.destroy();
+            mytopWellnessChartPie = new Chart(topWellness, {
+                type: "doughnut",
+                data: chartData,
+                options: chartOptions
+            });
+
+        }
+    });
+}
+async function runTopOfferChart() {
+
+    var data = {};
+    data.day = $('#mcof').val();
+    //data.day = 1;
+    $.ajax({
+        url: '/Dashboard/PostMostCickOffer',
+        data: {
+            data: data,
+        },
+        type: "POST",
+        datatype: "json",
+        success: function (response) {
+            //console.log(response);
+
+            var sum = 0;
+            for (var x = 3; x < response.length; x++) {
+                sum += response[x].total;
+            }
+            for (var i = 0; i < response.length; i++) {
+                document.getElementById("mcof_top1").innerHTML = "Others";
+                document.getElementById("mcof_perc1").innerHTML = sum.toFixed(2) + " %";
+
+                document.getElementById("mcof_top2").innerHTML = response[0].business;
+                document.getElementById("mcof_perc2").innerHTML = response[0].total + " %";
+
+                document.getElementById("mcof_top3").innerHTML = response[1].business;
+                document.getElementById("mcof_perc3").innerHTML = response[1].total + " %";
+
+                document.getElementById("mcof_top4").innerHTML = response[2].business;
+                document.getElementById("mcof_perc4").innerHTML = response[2].total + " %";
+            }
+
+            if (response[0].total == 0 && response[1].total == 0 && response[2].total == 0 && sum == 0) {
+                var xValues = ["No Data"];
+                var yValues = [1];
+
+                var barColors = [
+                    "#D3D3D3"
+                ];
+
+                var chartOptions = {
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false,
+                        }
+
+                    }
+                }
+
+            }
+            else {
+
+                var xValues = [response[0].business, response[1].business, response[2].business, "Others"];
+                var yValues = [response[0].total, response[1].total, response[2].total, sum];
+
+                var barColors = [
+                    "#132D28",  //Green
+                    "#8F9092",  //Gray
+                    "#AB262A",  //maroon
+                    "#c89328"   //gold
+                ];
+                var chartOptions = {
+
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+
+                    }
+                }
+            }
+            var chartData = {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yValues
+                }]
+            };
+            mytopOfferChartPie.destroy();
+            mytopOfferChartPie = new Chart(topOffer, {
+                type: "doughnut",
+                data: chartData,
+                options: chartOptions
+            });
 
         }
     });

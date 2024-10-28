@@ -161,13 +161,14 @@
     left: 0;
     right: 0;
     top: 20%;
-    background-color: white;
     box-shadow: 1px 1px 5px 2px var(--shadow);
     display: none;
     z-index: 1;
+    background-color: var(--light) !important;
+    color: var(--dark);
 }
-.filterModal h1{
-/*    color: red;*/
+.filterModal label {
+    color: var(--dark);
 }
 .companyNameFltr,
 .genderFltr,
@@ -267,6 +268,7 @@
     box-shadow: 1px 1px 5px 2px var(--shadow);
 /*    display: none;*/
     z-index: 1;
+    color: var(--dark);
 }
 
 .bulkEmailModal .control {
@@ -312,4 +314,11 @@
     height: 40px;
     position: absolute;
     opacity: .9;
+}
+
+tr p{
+    color: var(--dark) !important;
+}
+tr th {
+    color: var(--dark) !important;
 }

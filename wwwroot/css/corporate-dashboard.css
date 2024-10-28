@@ -213,6 +213,10 @@
 }
 .card {
     width: 500px;
+    background: var(--light);
+}
+.card h4 {
+    color: var(--dark) !important;
 }
 .carousel-holder {
     overflow: hidden;
@@ -237,4 +241,17 @@ button.next {
 
 .next {
     right: 0px;
+}
+
+
+
+/*Pie Chart*/
+#topRestoChart,
+#topHotelChart,
+#topStoreChart,
+#topWellnessChart,
+#topOfferChart {
+    width: 50% !important;
+    height: auto !important;
+    padding: 20px !important;
 }

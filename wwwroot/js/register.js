@@ -135,7 +135,7 @@ async function ShowFilter() {
         if (corporateFilter == "") {
             corporateFilter = null;
         }
-        console.log(corporateFilter);
+        //console.log(corporateFilter);
     });
 
     //GenderFilterDOM
@@ -220,9 +220,20 @@ async function ShowFilter() {
     $('#apply-filter-corporate').click(function () {
         spanval = "";
         getCorporateRegistration();
-        console.log("Hello World");
         filtermodal.style.display = "none";
     });
+
+
+    //search user
+    $('#user-registration-search').change(function () {
+        
+        var user = document.getElementById('user-registration-search').value;
+        console.log(user);
+        spanval = "";
+        companyNameFilter = user;
+        getUserRegistration();
+    });
+    
 }
 
 async function getUnregisteredList() {
@@ -270,23 +281,20 @@ async function sendToAll() {
     
     $('#send-to-all').change(function () {
         if (document.getElementById("send-to-all").checked == true) {
-            $('div input').attr('checked', true);
-            
+            $('div input').attr('checked', true); 
         }
         else {
             $('div input').attr('checked', false);
         }
-        
     });
     $('#sendEmail').click(function () {
         var checkedEmail = document.querySelectorAll('input[id="unregistered"]:checked');
-        var checkedName = document.querySelectorAll('input[id="unregistered"]:checked');
        
         selectedEmail = Array.from(checkedEmail).map(x => x.value);
         selectedName = Array.from(checkedEmail).map(x => x.name);
         
         if (checkedEmail.length == 0) {
-            console.log("No Name Selected");
+            //console.log("No Name Selected");
             document.getElementById('bulkEmailFormError').style.display = "block";
             setTimeout(function () {
                 document.getElementById('bulkEmailFormError').style.display = "none";
@@ -387,7 +395,7 @@ async function getUserRegistration() {
     data.status = statusFilter;
     data.page = spanval;
 
-    console.log(data);
+    //console.log(data);
     $.ajax({
         url: '/Register/PostDisplayRegistrationList',
         //async: false,
@@ -405,8 +413,8 @@ async function getUserRegistration() {
             spanval = data[0].currentPage;
 
 
-            console.log(data[0].items.length);
-            console.log(data[0]);
+            //console.log(data[0].items.length);
+            //console.log(data[0]);
             regtable.clear().draw();
 
             
@@ -515,7 +523,7 @@ async function getCorporateRegistration() {
     data.status = statusFilter;
     //data.page = spanval;
     
-    console.log(data);
+    //console.log(data);
     $.ajax({
         url: '/Register/PostDisplayCorporateList',
         //async: false,
@@ -526,7 +534,7 @@ async function getCorporateRegistration() {
         datatype: "json",
         success: function (data) {
 
-            console.log(data);
+            //console.log(data);
             
             //prev = data[0].prevPage;
             //next = data[0].nextPage;

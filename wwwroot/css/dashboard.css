@@ -1014,6 +1014,8 @@ input[type=text] {
     box-shadow: 1px 1px 5px 2px var(--shadow);
     display: none;
     z-index: 1;
+    background-color: var(--light);
+    color: var(--dark);
 }
 .closeFilterbtn {
     background: black !important;
@@ -1052,7 +1054,8 @@ input[type=text] {
     padding: 50px 80px;
     z-index: 1;
     display: none;
-
+    background-color: var(--light);
+    color: var(--dark);
 }
 .exportFiltersuccess h4{
     font-weight: bolder;
