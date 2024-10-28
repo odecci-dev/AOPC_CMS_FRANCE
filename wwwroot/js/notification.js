@@ -201,6 +201,9 @@ function displayComposeNotificationModal() {
     $('#closeComposeNotification').click(function () {
         composeNotification.style.display = "none";
     });
+    $('#discardNotificatoin').click(function () {
+        composeNotification.style.display = "none";
+    });
     
 }
 
