@@ -924,15 +924,15 @@ async function ShowGetLineGraphCountList() {
 
                 };
                     // Create the chart instance
-                    myChart.destroy();
-                    myChart = new Chart(ctx, {
-                        type: "line",
-                        data: chartData,
-                        options: chartOptions,
-                    });
+                myChart.destroy();
+                myChart = new Chart(ctx, {
+                    type: "line",
+                    data: chartData,
+                    options: chartOptions,
+                });
 
-                    // Update the chart data
-                    setInterval(function () {
+                // Update the chart data
+                setInterval(function () {
 
                         myChart.update();
                     }, 5000);
@@ -963,4 +963,12 @@ async function ShowGalleryArray() {
                 alert("There was an Error When Loading Data...");
             });
     }, 100);
+}
+
+async function auditTrailPagination() {
+    $('#audittrail-table').DataTable({
+        "scrollY": "450px",
+        "scrollCollapse": true,
+        "paging": true,
+    });
 }

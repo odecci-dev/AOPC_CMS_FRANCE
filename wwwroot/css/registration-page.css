@@ -322,3 +322,49 @@ tr p{
 tr th {
     color: var(--dark) !important;
 }
+.family-member{
+    margin-top: 30px;
+    display: none;
+}
+
+#family-member-table {
+    border: 1px solid var(--dark);
+    border-radius: 15px;
+    padding-top: 0px;
+}
+.family-member thead {
+    background-color: #ECECEC;
+    border-radius: 15px;
+    z-index: -1;
+}
+.family-member thead tr th {
+    padding: 20px;
+}
+.action__{
+    justify-content: flex-end !important;
+}
+.action__ div{
+    gap: 10px;
+}
+#family-member-table tr td {
+    padding: 20px;
+    border-radius: 15px;
+}
+.approve-btn{
+    display: flex;
+    gap: 10px;
+}
+#declineBtn {
+    background-color: #bb2124;
+    padding: 5px 10px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#approveBtn {
+    background-color: var(--accent);
+    padding: 5px 10px;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}

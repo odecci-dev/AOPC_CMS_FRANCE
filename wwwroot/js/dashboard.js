@@ -3,6 +3,8 @@ var next = 0;
 var spanval = 0;
 var currpage = "";
 
+
+
 let mytopRestoChartPie = new Chart();
 var topResto = document.getElementById("topRestoChart").getContext("2d");
 
@@ -18,7 +20,48 @@ var topWellness = document.getElementById("topWellnessChart").getContext("2d");
 let mytopOfferChartPie = new Chart();
 var topOffer = document.getElementById("topOfferChart").getContext("2d");
 
+//Date Filter Variables
+var type = 0;
+var startdate;
+var enddate;
+var apiEndpoint;
 
+const dateToday = new Date();
+//Current Date
+let currentDay = dateToday.getDate().toString().padStart(2, '0');;
+let currentMonth = (dateToday.getMonth() + 1).toString().padStart(2, '0');;
+let currentYear = dateToday.getFullYear();
+let currentDate = `${currentYear}-${currentMonth}-${currentDay}`;
+//Last Week Date
+var x = 7; // go back 7 days!
+dateToday.setDate(dateToday.getDate() - x);
+let lastWeekDay = dateToday.getDate().toString().padStart(2, '0');
+let lastWeekMonth = (dateToday.getMonth() + 1).toString().padStart(2, '0');
+let lastWeekYear = dateToday.getFullYear();
+let lastWeekDate = `${lastWeekYear}-${lastWeekMonth}-${lastWeekDay}`;
+
+startdate = lastWeekDate;
+enddate = currentDate;
+
+//top3 Details variables
+var restostartdate = lastWeekDate;
+var restoenddate = currentDate;
+var hotelstartdate = lastWeekDate;
+var hotelenddate = currentDate;
+var storestartdate = lastWeekDate;
+var storeenddate = currentDate;
+var wellnessstartdate = lastWeekDate;
+var wellnessenddate = currentDate;
+var offerstartdate = lastWeekDate;
+var offerenddate = currentDate;
+
+// news feed clicks variable
+var nfcstartdate = null;
+var nfcendtdate = null;
+
+// call to action variable
+var ctastartdate = null;
+var ctaendtdate = null;
 async function companyInformationTableLayout() {
    
 
@@ -427,8 +470,8 @@ async function downloadCompanyInfortmation() {
 async function runTopRestoChart() {
 
     var data = {};
-    data.day = $('#mcr').val();
-    //data.day = 1;
+    data.startdate = startdate;
+    data.enddate = enddate;
     $.ajax({
         url: '/Dashboard/PostMostClickRestaurant',
         data: {
@@ -521,15 +564,54 @@ async function runTopRestoChart() {
 
         }
     });
-    
+}
+async function viewRestaurantDetails() {
+    $('#mcr_vm').click(function () {
+        document.getElementById("btn-mcs").style.display = "none";
+        document.getElementById("btn-mch").style.display = "none";
+        document.getElementById("btn-mcr").style.display = "block";
+        document.getElementById("modalTitle").innerHTML = "Restaurant";
+        document.getElementById("modalTHTitle").innerHTML = "Restaurant";
+        var data = {};
+        data.startdate = restostartdate;
+        data.enddate = restoenddate;
+        console.log(data);
+         $.blockUI(reloadLoading);
+        setTimeout(function () {
+            $.ajax(
+                {
+                    url: "/Dashboard/PostMostClickRestaurant",
+                    data: {
+                        data: data,
+                    },
+                    type: "POST",
+                    datatype: "json"
+                }).done(function (data) {
+
+                    mcrtable.clear().draw();
+                    for (var i = 0; i < data.length; i++) {
+                        $("#mcr_call").dataTable().fnAddData([
+                            "<td><p></p><p>" + data[i].business + "</p></td>",
+                            "<td><p>" + data[i].count + "</p></td>",
+                            "<td><p>" + data[i].total + " %" + "</p></td>",
+
+                        ]);
+                    }
+                    $.unblockUI();
+                }).fail(function () {
+                    alert("There was an Error When Loading Data...");
+                });
+        }, 100);
+        $('#ShowMostClickModal').modal('show');
+    });
 }
 async function runTopHotelChart() {
 
     var data = {};
-    data.day = $('#mch').val();
-    //data.day = 1;
+    data.startdate = startdate;
+    data.enddate = enddate;
     $.ajax({
-        url: '/Dashboard/PostMostClickedHospitality',
+        url: '/Dashboard/PostMostClickedHospitalityv2',
         data: {
             data: data,
         },
@@ -616,13 +698,52 @@ async function runTopHotelChart() {
         }
     });
 }
+async function viewHotelDetails() {
+    $('#mch_vm').click(function () {
+        document.getElementById("btn-mcs").style.display = "none";
+        document.getElementById("btn-mch").style.display = "block";
+        document.getElementById("btn-mcr").style.display = "none";
+        document.getElementById("modalTitle").innerHTML = "Hotel";
+        document.getElementById("modalTHTitle").innerHTML = "Hotel";
+        var data = {};
+        var data = {};
+        data.startdate = hotelstartdate;
+        data.enddate = hotelenddate;
+        setTimeout(function () {
+            $.ajax(
+                {
+                    url: "/Dashboard/PostMostClickedHospitalityv2",
+                    data: {
+                        data: data,
+                    },
+                    type: "POST",
+                    datatype: "json"
+                }).done(function (data) {
+
+                    mcrtable.clear().draw();
+                    for (var i = 0; i < data.length; i++) {
+                        $("#mcr_call").dataTable().fnAddData([
+                            "<td><p></p><p>" + data[i].business + "</p></td>",
+                            "<td><p>" + data[i].count + "</p></td>",
+                            "<td><p>" + data[i].total + " %" + "</p></td>",
+
+                        ]);
+                    }
+                    $.unblockUI();
+                }).fail(function () {
+                    alert("There was an Error When Loading Data...");
+                });
+        }, 100);
+        $('#ShowMostClickModal').modal('show');
+    });
+}
 async function runTopStoreChart() {
 
     var data = {};
-    data.day = $('#mcs').val();
-    //data.day = 1;
+    data.startdate = startdate;
+    data.enddate = enddate;
     $.ajax({
-        url: '/Dashboard/PostMostCickStore',
+        url: '/Dashboard/PostMostCickStorev2',
         data: {
             data: data,
         },
@@ -709,13 +830,51 @@ async function runTopStoreChart() {
         }
     });
 }
+async function viewStoreDetails() {
+    $('#mcs_vm').click(function () {
+        document.getElementById("btn-mcs").style.display = "block";
+        document.getElementById("btn-mch").style.display = "none";
+        document.getElementById("btn-mcr").style.display = "none";
+        document.getElementById("modalTitle").innerHTML = "Store";
+        document.getElementById("modalTHTitle").innerHTML = "Store";
+        var data = {};
+        data.startdate = storestartdate;
+        data.enddate = storeenddate;
+        setTimeout(function () {
+            $.ajax(
+                {
+                    url: "/Dashboard/PostMostCickStorev2",
+                    data: {
+                        data: data,
+                    },
+                    type: "POST",
+                    datatype: "json"
+                }).done(function (data) {
+
+                    mcrtable.clear().draw();
+                    for (var i = 0; i < data.length; i++) {
+                        $("#mcr_call").dataTable().fnAddData([
+                            "<td><p></p><p>" + data[i].business + "</p></td>",
+                            "<td><p>" + data[i].count + "</p></td>",
+                            "<td><p>" + data[i].total + " %" + "</p></td>",
+
+                        ]);
+                    }
+                    $.unblockUI();
+                }).fail(function () {
+                    alert("There was an Error When Loading Data...");
+                });
+        }, 100);
+        $('#ShowMostClickModal').modal('show');
+    });
+}
 async function runTopWellnessChart() {
 
     var data = {};
-    data.day = $('#mcw').val();
-    //data.day = 1;
+    data.startdate = startdate;
+    data.enddate = enddate;
     $.ajax({
-        url: '/Dashboard/PostMostCickWellness',
+        url: '/Dashboard/PostMostCickWellnessv2',
         data: {
             data: data,
         },
@@ -802,13 +961,51 @@ async function runTopWellnessChart() {
         }
     });
 }
+async function viewWellnessDetails() {
+    $('#mcw_vm').click(function () {
+        document.getElementById("btn-mcs").style.display = "none";
+        document.getElementById("btn-mch").style.display = "none";
+        document.getElementById("btn-mcr").style.display = "block";
+        document.getElementById("modalTitle").innerHTML = "Wellness";
+        document.getElementById("modalTHTitle").innerHTML = "Wellness";
+        var data = {};
+        data.startdate = wellnessstartdate;
+        data.enddate = wellnessenddate;
+        setTimeout(function () {
+            $.ajax(
+                {
+                    url: "/Dashboard/PostMostCickWellnessv2",
+                    data: {
+                        data: data,
+                    },
+                    type: "POST",
+                    datatype: "json"
+                }).done(function (data) {
+
+                    mcrtable.clear().draw();
+                    for (var i = 0; i < data.length; i++) {
+                        $("#mcr_call").dataTable().fnAddData([
+                            "<td><p></p><p>" + data[i].business + "</p></td>",
+                            "<td><p>" + data[i].count + "</p></td>",
+                            "<td><p>" + data[i].total + " %" + "</p></td>",
+
+                        ]);
+                    }
+                    $.unblockUI();
+                }).fail(function () {
+                    alert("There was an Error When Loading Data...");
+                });
+        }, 100);
+        $('#ShowMostClickModal').modal('show');
+    });
+}
 async function runTopOfferChart() {
 
     var data = {};
-    data.day = $('#mcof').val();
-    //data.day = 1;
+    data.startdate = startdate;
+    data.enddate = enddate;
     $.ajax({
-        url: '/Dashboard/PostMostCickOffer',
+        url: '/Dashboard/PostMostCickOfferv2',
         data: {
             data: data,
         },
@@ -894,4 +1091,325 @@ async function runTopOfferChart() {
 
         }
     });
+}
+async function viewOfferDetails() {
+    $('#mco_vm').click(function () {
+        document.getElementById("btn-mcs").style.display = "none";
+        document.getElementById("btn-mch").style.display = "none";
+        document.getElementById("btn-mcr").style.display = "block";
+        document.getElementById("modalTitle").innerHTML = "Offer";
+        document.getElementById("modalTHTitle").innerHTML = "Offer";
+        var data = {};
+        data.startdate = wellnessstartdate;
+        data.enddate = wellnessenddate;
+        setTimeout(function () {
+            $.ajax(
+                {
+                    url: "/Dashboard/PostMostCickOfferv2",
+                    data: {
+                        data: data,
+                    },
+                    type: "POST",
+                    datatype: "json"
+                }).done(function (data) {
+
+                    mcrtable.clear().draw();
+                    for (var i = 0; i < data.length; i++) {
+                        $("#mcr_call").dataTable().fnAddData([
+                            "<td><p></p><p>" + data[i].business + "</p></td>",
+                            "<td><p>" + data[i].count + "</p></td>",
+                            "<td><p>" + data[i].total + " %" + "</p></td>",
+
+                        ]);
+                    }
+                    $.unblockUI();
+                }).fail(function () {
+                    alert("There was an Error When Loading Data...");
+                });
+        }, 100);
+        $('#ShowMostClickModal').modal('show');
+    });
+}
+async function PostClickCountTop2() {
+    $.blockUI(reloadLoading);
+    var data = {};
+    data.startdate = nfcstartdate;
+    data.enddate = nfcendtdate;
+    setTimeout(function () {
+        $.ajax(
+            {
+                url: "/Dashboard/PostMostClickCounts",
+                data: {
+                    data: data,
+                },
+                type: "POST",
+                datatype: "json"
+            }).done(function (data) {
+                // 
+                for (var i = 0; i < data.length; i++) {
+
+                    $("#tbl_cnt tbody").append([
+                        "<tr>" +
+                        "<td>" + data[i].module + "</td>" +
+                        "<td>" + data[i].count + "</td>", + "</tr>"
+                    ]);
+
+                }
+
+                $.unblockUI();
+            }).fail(function () {
+                alert("There was an Error When Loading Data...");
+            });
+    }, 100);
+}
+async function PostCallToAction() {
+    var data = {};
+    var cat = "";
+    cat = $('#cta-opt').val();
+    data.startdate = ctastartdate;
+    data.enddate = ctaendtdate;
+    data.category = cat;
+    $.ajax({
+        url: '/Dashboard/PostCallToActions',
+        data: {
+            data: data,
+        },
+        type: "POST",
+        datatype: "json",
+        success: function (data) {
+            //console.log(data);
+            cAbtable.clear().draw();
+            for (var i = 0; i < data.length; i++) {
+                $("#cAction_table").dataTable().fnAddData([
+                    "<td><p></p><p>" + data[i].business + "</p></td>",
+                    "<td><p>" + data[i].category + "</p></td>",
+                    "<td><p>" + data[i].callCount + "</p></td>",
+                    "<td><p>" + data[i].emailCount + "</p></td>",
+                    "<td><p>" + data[i].bookCount + "</p></td>",
+
+                ]);
+            }
+        }
+    });
+}
+async function dateFilterDefault() {
+    document.getElementById("dateFilterModal").style.display = "flex";
+    document.getElementById("dateFrom").value = lastWeekDate;
+    document.getElementById("dateTo").value = currentDate;
+}
+
+async function dateFilter() {
+
+    //Close Date Filter
+    $('#closeDateFilter').click(function () {
+
+        document.getElementById("dateFilterModal").style.display = "none";
+        
+    });
+    //Show Date Filter for User Count
+    $('#selectDateForUserCount').click(function () {
+
+        dateFilterDefault();
+
+        type = 1;
+        apiEndpoint = "PostCountAllUser";
+    });
+    $('#selectDateForTopResto').click(function () {
+
+        dateFilterDefault();
+
+
+        type = 2;
+    });
+    $('#selectDateForTopHotel').click(function () {
+
+        dateFilterDefault();
+
+
+        type = 3;
+    });
+    $('#selectDateForTopStore').click(function () {
+
+        dateFilterDefault();
+        type = 4;
+    });
+    $('#selectDateForTopWellness').click(function () {
+
+        dateFilterDefault();
+
+
+        type = 5;
+    });
+    $('#selectDateForTopOffer').click(function () {
+
+        dateFilterDefault();
+
+
+        type = 6;
+    });
+    $('#selectDateForCTA').click(function () {
+
+        dateFilterDefault();
+
+
+        type = 7;
+    });
+    $('#selectDateForNFC').click(function () {
+
+        dateFilterDefault();
+
+        type = 8;
+    });
+    $('#applyDateFilter').click(function () {
+        startdate = document.getElementById("dateFrom").value;
+        enddate = document.getElementById("dateTo").value;
+        document.getElementById("dateFilterModal").style.display = "none";
+        
+        if (type == 1) {
+            const ctx = document.getElementById("myChart").getContext("2d");
+            const arrdate = new Array();
+            const arrval = new Array();
+            var data = {};
+            data.startdate = startdate;
+            data.enddate = enddate;
+            $.ajax({
+                url: '/Dashboard/' + apiEndpoint,
+                data: {
+                    data: data,
+                },
+                type: "POST",
+                datatype: "json",
+                success: function (response) {
+                    console.log(response);
+
+                    for (var i = 0; i < response.length; i++) {
+                        arrdate.push(response[i].date);
+                        arrval.push(response[i].graph_count);
+                        document.getElementById("new_user").innerHTML = response[0].count;
+                        document.getElementById("percent-registered").innerHTML = response[0].percentage.toFixed(2) + " %";
+                    }
+                    //console.log(arrval);
+                    var chartData = {
+                        labels: arrdate, // conditions to made
+                        datasets: [
+                            {
+                                label: "",
+                                data: arrval,
+                                backgroundColor: "rgba(255, 99, 132, 0.2)",
+                                borderColor: "rgba(255, 99, 132, 1)",
+                                borderWidth: 1,
+                            },
+                        ],
+                    };
+
+                    var chartOptions = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+
+                        scales: {
+                            yAxes: [
+                                {
+                                    ticks: {
+                                        beginAtZero: true,
+                                    },
+                                },
+                            ],
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+
+                    };
+                    // Create the chart instance
+                    myChart.destroy();
+                    myChart = new Chart(ctx, {
+                        type: "line",
+                        data: chartData,
+                        options: chartOptions,
+                    });
+
+                    // Update the chart data
+                    setInterval(function () {
+
+                        myChart.update();
+                    }, 5000);
+
+
+                    $.unblockUI();
+                }
+            });
+        }
+        else if (type != 1 && type != 7 && type != 8) {
+            switch (type) {
+                case 2:
+                    runTopRestoChart();
+                    restostartdate = startdate;
+                    restoenddate = enddate;
+                    break;
+                case 3:
+                    runTopHotelChart();
+                    hotelstartdate = startdate;
+                    hotelenddate = enddate;
+                    break;
+                case 4:
+                    runTopStoreChart();
+                    storestartdate = startdate;
+                    storeenddate = enddate;
+                    break;
+                case 5:
+                    runTopWellnessChart();
+                    wellnessstartdate = startdate;
+                    wellnessenddate = enddate;
+                    break;
+                case 6:
+                    runTopOfferChart();
+                    offerstartdate = startdate;
+                    offerenddate = enddate;
+                    break;
+            }
+        }
+        else if (type == 8) {
+            nfcstartdate = startdate;
+            nfcendtdate = enddate;
+            PostClickCountTop2();
+        }
+        else {
+            ctastartdate = startdate;
+            ctaendtdate = enddate;
+            PostCallToAction();
+        }
+    });
+    $('#cta-opt').change(function () {
+        PostCallToAction();
+    });
+     
+    
+}
+
+
+
+async function GetAllUserCount() {
+    var data = {};
+    data.startdate = null;
+    data.enddate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
+    
+    $.ajax(
+        {
+            url: "/Dashboard/PostCountAllUser",
+            data: {
+                data: data,
+            },
+            type: "POST",
+            datatype: "json"
+        }).done(function (data) {
+
+            for (var i = 0; i < data.length; i++) {
+                document.getElementById("all-user").innerHTML = data[i].count;
+            }
+            $.unblockUI();
+        }).fail(function () {
+            alert("There was an Error When Loading Data...CountAllUser");
+        });
 }
