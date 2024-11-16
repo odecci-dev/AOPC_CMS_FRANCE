@@ -487,22 +487,44 @@ async function runTopRestoChart() {
                 sum += response[x].total;
             }
             for (var i = 0; i < response.length; i++) {
+                var businessDataTwo;
+                var businessDataThree;
+                var totalDataTwo;
+                var totalDataThree;
+                if (response.length == 1) {
+                    businessDataTwo = "No Data";
+                    totalDataTwo = 0;
+                    businessDataThree = "No Data";
+                    totalDataThree = 0;
+                }
+                if (response.length == 2) {
+                    businessDataThree = "No Data";
+                    totalDataThree = 0;
+                    businessDataTwo = response[1].business;
+                    totalDataTwo = response[1].total;
+                }
+                if (response.length >= 3) {
+                    businessDataTwo = response[1].business;
+                    totalDataTwo = response[1].total;
+                    businessDataThree = response[2].business;
+                    totalDataThree = response[2].total;
+                }
                 document.getElementById("mcr_top1").innerHTML = "Others";
                 document.getElementById("mcr_perc1").innerHTML = sum.toFixed(2) + " %";
 
                 document.getElementById("mcr_top2").innerHTML = response[0].business;
                 document.getElementById("mcr_perc2").innerHTML = response[0].total + " %";
 
-                document.getElementById("mcr_top3").innerHTML = response[1].business;
-                document.getElementById("mcr_perc3").innerHTML = response[1].total + " %";
+                document.getElementById("mcr_top3").innerHTML = businessDataTwo;
+                document.getElementById("mcr_perc3").innerHTML = totalDataTwo + " %";
 
-                document.getElementById("mcr_top4").innerHTML = response[2].business;
-                document.getElementById("mcr_perc4").innerHTML = response[2].total + " %";
+                document.getElementById("mcr_top4").innerHTML = businessDataThree;
+                document.getElementById("mcr_perc4").innerHTML = totalDataThree + " %";
 
 
             }
 
-            if (response[0].total == 0 && response[1].total == 0 && response[2].total == 0 && sum == 0) {
+            if (response[0].total == 0 && totalDataTwo == 0 && totalDataThree == 0 && sum == 0) {
                 var xValues = ["No Data"];
                 var yValues = [1];
 
@@ -526,8 +548,8 @@ async function runTopRestoChart() {
             }
             else {
 
-                var xValues = [response[0].business, response[1].business, response[2].business, "Others"];
-                var yValues = [response[0].total, response[1].total, response[2].total, sum];
+                var xValues = [response[0].business, businessDataTwo, businessDataThree, "Others"];
+                var yValues = [response[0].total, totalDataTwo, totalDataThree, sum];
 
                 var barColors = [
                     "#132D28",  //Green
@@ -618,27 +640,54 @@ async function runTopHotelChart() {
         type: "POST",
         datatype: "json",
         success: function (response) {
-            //console.log(response);
 
             var sum = 0;
             for (var x = 3; x < response.length; x++) {
                 sum += response[x].total;
             }
             for (var i = 0; i < response.length; i++) {
+                
+                var businessDataTwo;
+                var businessDataThree;
+                var totalDataTwo;
+                var totalDataThree;
+                if (response.length == 1) {
+                    businessDataTwo = "No Data";
+                    totalDataTwo = 0;
+                    businessDataThree = "No Data";
+                    totalDataThree = 0;
+                }
+                if (response.length == 2) {
+                    businessDataThree = "No Data";
+                    totalDataThree = 0;
+                    businessDataTwo = response[1].business;
+                    totalDataTwo = response[1].total;
+                }
+                if (response.length >= 3) {
+                    businessDataTwo = response[1].business;
+                    totalDataTwo = response[1].total;
+                    businessDataThree = response[2].business;
+                    totalDataThree = response[2].total;
+                }
+
+
+
+
                 document.getElementById("mch_top1").innerHTML = "Others";
                 document.getElementById("mch_perc1").innerHTML = sum.toFixed(2) + " %";
-
+                
                 document.getElementById("mch_top2").innerHTML = response[0].business;
                 document.getElementById("mch_perc2").innerHTML = response[0].total + " %";
+                
+                document.getElementById("mch_top3").innerHTML = businessDataTwo;
+                document.getElementById("mch_perc3").innerHTML = totalDataTwo + " %";
 
-                document.getElementById("mch_top3").innerHTML = response[1].business;
-                document.getElementById("mch_perc3").innerHTML = response[1].total + " %";
-
-                document.getElementById("mch_top4").innerHTML = response[2].business;
-                document.getElementById("mch_perc4").innerHTML = response[2].total + " %";
+                document.getElementById("mch_top4").innerHTML = businessDataThree;
+                document.getElementById("mch_perc4").innerHTML = totalDataThree + " %";
+                
             }
 
-            if (response[0].total == 0 && response[1].total == 0 && response[2].total == 0 && sum == 0) {
+            if (response[0].total == 0 && totalDataTwo == 0 && totalDataThree == 0 && sum == 0) {
                 var xValues = ["No Data"];
                 var yValues = [1];
 
@@ -662,8 +711,8 @@ async function runTopHotelChart() {
             }
             else {
 
-                var xValues = [response[0].business, response[1].business, response[2].business, "Others"];
-                var yValues = [response[0].total, response[1].total, response[2].total, sum];
+                var xValues = [response[0].business, businessDataTwo, businessDataThree, "Others"];
+                var yValues = [response[0].total, totalDataTwo, totalDataThree, sum];
 
                 var barColors = [
                     "#132D28",  //Green
@@ -757,20 +806,42 @@ async function runTopStoreChart() {
                 sum += response[x].total;
             }
             for (var i = 0; i < response.length; i++) {
+                var businessDataTwo;
+                var businessDataThree;
+                var totalDataTwo;
+                var totalDataThree;
+                if (response.length == 1) {
+                    businessDataTwo = "No Data";
+                    totalDataTwo = 0;
+                    businessDataThree = "No Data";
+                    totalDataThree = 0;
+                }
+                if (response.length == 2) {
+                    businessDataThree = "No Data";
+                    totalDataThree = 0;
+                    businessDataTwo = response[1].business;
+                    totalDataTwo = response[1].total;
+                }
+                if (response.length >= 3) {
+                    businessDataTwo = response[1].business;
+                    totalDataTwo = response[1].total;
+                    businessDataThree = response[2].business;
+                    totalDataThree = response[2].total;
+                }
                 document.getElementById("mcs_top1").innerHTML = "Others";
                 document.getElementById("mcs_perc1").innerHTML = sum.toFixed(2) + " %";
 
                 document.getElementById("mcs_top2").innerHTML = response[0].business;
                 document.getElementById("mcs_perc2").innerHTML = response[0].total + " %";
 
-                document.getElementById("mcs_top3").innerHTML = response[1].business;
-                document.getElementById("mcs_perc3").innerHTML = response[1].total + " %";
+                document.getElementById("mcs_top3").innerHTML = businessDataTwo;
+                document.getElementById("mcs_perc3").innerHTML = totalDataTwo + " %";
 
-                document.getElementById("mcs_top4").innerHTML = response[2].business;
-                document.getElementById("mcs_perc4").innerHTML = response[2].total + " %";
+                document.getElementById("mcs_top4").innerHTML = businessDataThree;
+                document.getElementById("mcs_perc4").innerHTML = totalDataThree + " %";
             }
 
-            if (response[0].total == 0 && response[1].total == 0 && response[2].total == 0 && sum == 0) {
+            if (response[0].total == 0 && totalDataTwo == 0 && totalDataThree == 0 && sum == 0) {
                 var xValues = ["No Data"];
                 var yValues = [1];
 
@@ -794,8 +865,8 @@ async function runTopStoreChart() {
             }
             else {
 
-                var xValues = [response[0].business, response[1].business, response[2].business, "Others"];
-                var yValues = [response[0].total, response[1].total, response[2].total, sum];
+                var xValues = [response[0].business, businessDataTwo, businessDataThree, "Others"];
+                var yValues = [response[0].total, totalDataTwo, totalDataThree, sum];
 
                 var barColors = [
                     "#132D28",  //Green
@@ -888,20 +959,42 @@ async function runTopWellnessChart() {
                 sum += response[x].total;
             }
             for (var i = 0; i < response.length; i++) {
+                var businessDataTwo;
+                var businessDataThree;
+                var totalDataTwo;
+                var totalDataThree;
+                if (response.length == 1) {
+                    businessDataTwo = "No Data";
+                    totalDataTwo = 0;
+                    businessDataThree = "No Data";
+                    totalDataThree = 0;
+                }
+                if (response.length == 2) {
+                    businessDataThree = "No Data";
+                    totalDataThree = 0;
+                    businessDataTwo = response[1].business;
+                    totalDataTwo = response[1].total;
+                }
+                if (response.length >= 3) {
+                    businessDataTwo = response[1].business;
+                    totalDataTwo = response[1].total;
+                    businessDataThree = response[2].business;
+                    totalDataThree = response[2].total;
+                }
                 document.getElementById("mcw_top1").innerHTML = "Others";
                 document.getElementById("mcw_perc1").innerHTML = sum.toFixed(2) + " %";
 
                 document.getElementById("mcw_top2").innerHTML = response[0].business;
                 document.getElementById("mcw_perc2").innerHTML = response[0].total + " %";
 
-                document.getElementById("mcw_top3").innerHTML = response[1].business;
-                document.getElementById("mcw_perc3").innerHTML = response[1].total + " %";
+                document.getElementById("mcw_top3").innerHTML = businessDataTwo;
+                document.getElementById("mcw_perc3").innerHTML = totalDataTwo + " %";
 
-                document.getElementById("mcw_top4").innerHTML = response[2].business;
-                document.getElementById("mcw_perc4").innerHTML = response[2].total + " %";
+                document.getElementById("mcw_top4").innerHTML = businessDataThree;
+                document.getElementById("mcw_perc4").innerHTML = totalDataThree + " %";
             }
 
-            if (response[0].total == 0 && response[1].total == 0 && response[2].total == 0 && sum == 0) {
+            if (response[0].total == 0 && totalDataTwo == 0 && totalDataThree == 0 && sum == 0) {
                 var xValues = ["No Data"];
                 var yValues = [1];
 
@@ -925,8 +1018,8 @@ async function runTopWellnessChart() {
             }
             else {
 
-                var xValues = [response[0].business, response[1].business, response[2].business, "Others"];
-                var yValues = [response[0].total, response[1].total, response[2].total, sum];
+                var xValues = [response[0].business, businessDataTwo, businessDataThree, "Others"];
+                var yValues = [response[0].total, totalDataTwo, totalDataThree, sum];
 
                 var barColors = [
                     "#132D28",  //Green
@@ -1019,20 +1112,42 @@ async function runTopOfferChart() {
                 sum += response[x].total;
             }
             for (var i = 0; i < response.length; i++) {
+                var businessDataTwo;
+                var businessDataThree;
+                var totalDataTwo;
+                var totalDataThree;
+                if (response.length == 1) {
+                    businessDataTwo = "No Data";
+                    totalDataTwo = 0;
+                    businessDataThree = "No Data";
+                    totalDataThree = 0;
+                }
+                if (response.length == 2) {
+                    businessDataThree = "No Data";
+                    totalDataThree = 0;
+                    businessDataTwo = response[1].business;
+                    totalDataTwo = response[1].total;
+                }
+                if (response.length >= 3) {
+                    businessDataTwo = response[1].business;
+                    totalDataTwo = response[1].total;
+                    businessDataThree = response[2].business;
+                    totalDataThree = response[2].total;
+                }
                 document.getElementById("mcof_top1").innerHTML = "Others";
                 document.getElementById("mcof_perc1").innerHTML = sum.toFixed(2) + " %";
 
                 document.getElementById("mcof_top2").innerHTML = response[0].business;
                 document.getElementById("mcof_perc2").innerHTML = response[0].total + " %";
 
-                document.getElementById("mcof_top3").innerHTML = response[1].business;
-                document.getElementById("mcof_perc3").innerHTML = response[1].total + " %";
+                document.getElementById("mcof_top3").innerHTML = businessDataTwo;
+                document.getElementById("mcof_perc3").innerHTML = totalDataTwo + " %";
 
-                document.getElementById("mcof_top4").innerHTML = response[2].business;
-                document.getElementById("mcof_perc4").innerHTML = response[2].total + " %";
+                document.getElementById("mcof_top4").innerHTML = businessDataThree;
+                document.getElementById("mcof_perc4").innerHTML = totalDataThree + " %";
             }
 
-            if (response[0].total == 0 && response[1].total == 0 && response[2].total == 0 && sum == 0) {
+            if (response[0].total == 0 && totalDataTwo == 0 && totalDataThree == 0 && sum == 0) {
                 var xValues = ["No Data"];
                 var yValues = [1];
 
@@ -1056,8 +1171,8 @@ async function runTopOfferChart() {
             }
             else {
 
-                var xValues = [response[0].business, response[1].business, response[2].business, "Others"];
-                var yValues = [response[0].total, response[1].total, response[2].total, sum];
+                var xValues = [response[0].business, businessDataTwo, businessDataThree, "Others"];
+                var yValues = [response[0].total, totalDataTwo, totalDataThree, sum];
 
                 var barColors = [
                     "#132D28",  //Green
