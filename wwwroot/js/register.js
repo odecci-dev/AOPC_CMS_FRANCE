@@ -12,7 +12,7 @@ var statusFilter = null;
 var spanval = 0;
 
 var FamilyUserId;
-
+var isFmilyUserVIP;
 async function userRegistrationListTableLayout() {
     corusertable = $('#corporate-user-table').DataTable({
         "columnDefs": [
@@ -425,7 +425,6 @@ async function getUserRegistration() {
     data.status = statusFilter;
     data.page = spanval;
 
-    console.log(data);
     $.ajax({
         url: '/Register/PostDisplayRegistrationList',
         //async: false,
@@ -480,7 +479,8 @@ async function getUserRegistration() {
                     '" data-utype="' + data[0].items[i].userType +
                     '" data-usercorpid="' + data[0].items[i].corporateID +
                     '"  data-displayimg="' + data[0].items[i].filePath +
-                    '"  data-vipstats="' + data[0].items[i].isVIP + '">' +
+                    '"  data-vipstats="' + data[0].items[i].isVIP +
+                    '"  data-emailstatus="' + data[0].items[i].status + '">' +
 
                     '<svg width="11" height="11" viewBox="0 0 11 11" fill="none"xmlns="http://www.w3.org/2000/svg">' +
                     '<path d="M5.02558 1.92456H1.89457C1.65732 1.92456 1.42978 2.0164 1.26201 2.17986C1.09425 2.34333 1 2.56504 1 2.79621V8.89779C1 9.12896 1.09425 9.35067 1.26201 9.51414C1.42978 9.6776 1.65732 9.76944 1.89457 9.76944H8.15659C8.39385 9.76944 8.62139 9.6776 8.78915 9.51414C8.95692 9.35067 9.05117 9.12896 9.05117 8.89779V5.847"' + 'stroke="black"' + 'stroke-linecap="round"' + 'stroke-linejoin="round"/>' + '<path d="M8.38023 1.27079C8.55817 1.09741 8.79951 1 9.05116 1C9.30281 1 9.54415 1.09741 9.72209 1.27079C9.90003 1.44417 10 1.67933 10 1.92453C10 2.16973 9.90003 2.40488 9.72209 2.57827L5.47286 6.71862L3.68372 7.15445L4.131 5.41114L8.38023 1.27079Z"' +
@@ -494,6 +494,7 @@ async function getUserRegistration() {
                     '" data-lname="' + data[0].items[i].lname +
                     '" data-email="' + data[0].items[i].email +
                     '" data-pos="' + data[0].items[i].positionID +
+                    '"  data-vipstats="' + data[0].items[i].isVIP +
                     '"  data-gender="' + data[0].items[i].gender +
 
                     '" >' + '<svg width="11" height="10" viewBox="0 0 11 10" fill="none"  xmlns="http://www.w3.org/2000/svg">' +
@@ -509,6 +510,7 @@ async function getUserRegistration() {
                     '" data-sentemail="' + data[0].items[i].email +
                     '" data-pos="' + data[0].items[i].positionID +
                     '"  data-gender="' + data[0].items[i].gender +
+                    '"  data-vipstats="' + data[0].items[i].isVIP +
                     '"  data-emailstatus="' + data[0].items[i].status + '" >' +
 
                     '<svg width="11" height="10" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">' + '<path d="M0 12.3047V1.19576C0 1.1829 0.0192864 1.06075 0.0578592 0.829315L6.59595 6.42237L0.0771456 12.6905C0.0257152 12.5104 0 12.3819 0 12.3047V12.3047ZM0.867888 0.0578592C0.957891 0.0192864 1.06718 0 1.19576 0H18.8042C18.92 0 19.0357 0.0192864 19.1514 0.0578592L12.594 5.6702L11.7261 6.36451L10.0096 7.77242L8.29315 6.36451L7.42526 5.6702L0.867888 0.0578592ZM0.887174 13.4426L7.46384 7.13597L10.0096 9.19961L12.5554 7.13597L19.1321 13.4426C19.0293 13.4812 18.92 13.5005 18.8042 13.5005H1.19576C1.0929 13.5005 0.990035 13.4812 0.887174 13.4426V13.4426ZM13.4233 6.42237L19.9421 0.829315C19.9807 0.945034 20 1.06718 20 1.19576V12.3047C20 12.4204 19.9807 12.549 19.9421 12.6905L13.4233 6.42237Z" fill="black"/>' +
@@ -536,8 +538,8 @@ async function getUserRegistration() {
 
 }
 async function displayFamilyMember() {
-    var familyMemberTables = document.getElementById("family-member"); 
-    familyMemberTables.style.display = "none";
+    
+    var familyMemberTables = document.getElementById("family-member");
     var data = {};
     data.FamilyUserId = FamilyUserId;
     //console.log(data.Id);
@@ -626,12 +628,19 @@ async function editUserRegistration() {
     }); 
 
     $('#register-table').on('click', '.tbl-edit', function () {
+        isFmilyUserVIP = $(this).data("vipstats");
         FamilyUserId = $(this).data("id");
-        displayFamilyMember();
+        console.log(isFmilyUserVIP);
+        if (isFmilyUserVIP == "Yes") {
+            familyMemberTables.style.display = "block";
+            displayFamilyMember();
+        }
+        else {
+            familyMemberTables.style.display = "none";
+        }
     });
     
 }
-
 async function changeFamilyMemberStatus() {
     $('#family-member-table').on('click', '#approveBtn', function () {
         var data = {};
@@ -689,7 +698,7 @@ async function getCorporateRegistration() {
     data.status = statusFilter;
     //data.page = spanval;
     
-    console.log(data);
+    //console.log(data);
     $.ajax({
         url: '/Register/PostDisplayCorporateList',
         //async: false,

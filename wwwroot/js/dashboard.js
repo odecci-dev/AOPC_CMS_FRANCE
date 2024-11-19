@@ -24,6 +24,7 @@ var topOffer = document.getElementById("topOfferChart").getContext("2d");
 var type = 0;
 var startdate;
 var enddate;
+var day = 0;
 var apiEndpoint;
 
 const dateToday = new Date();
@@ -44,14 +45,19 @@ startdate = lastWeekDate;
 enddate = currentDate;
 
 //top3 Details variables
+var restoday = 0;
 var restostartdate = lastWeekDate;
 var restoenddate = currentDate;
+var hotelday = 0;
 var hotelstartdate = lastWeekDate;
 var hotelenddate = currentDate;
+var storeday = 0;
 var storestartdate = lastWeekDate;
 var storeenddate = currentDate;
+var wellnessday = 0;
 var wellnessstartdate = lastWeekDate;
 var wellnessenddate = currentDate;
+var offerday = 0;
 var offerstartdate = lastWeekDate;
 var offerenddate = currentDate;
 
@@ -62,6 +68,9 @@ var nfcendtdate = null;
 // call to action variable
 var ctastartdate = null;
 var ctaendtdate = null;
+
+//Number of Days Filter
+var days = 0;
 async function companyInformationTableLayout() {
    
 
@@ -466,12 +475,91 @@ async function downloadCompanyInfortmation() {
         }
     });
 }
+async function postNewUser() {
+    const ctx = document.getElementById("myChart").getContext("2d");
+    const arrdate = new Array();
+    const arrval = new Array();
+    var data = {};
+    data.day = day;
+    data.startdate = startdate;
+    data.enddate = enddate;
+    //console.log(data);
+    $.ajax({
+        url: '/Dashboard/PostCountAllUser',
+        data: {
+            data: data,
+        },
+        type: "POST",
+        datatype: "json",
+        success: function (response) {
+            //console.log(response);
 
+            for (var i = 0; i < response.length; i++) {
+                arrdate.push(response[i].date);
+                arrval.push(response[i].graph_count);
+                document.getElementById("new_user").innerHTML = response[0].count;
+                document.getElementById("percent-registered").innerHTML = response[0].percentage.toFixed(2) + " %";
+            }
+            //console.log(arrval);
+            var chartData = {
+                labels: arrdate, // conditions to made
+                datasets: [
+                    {
+                        label: "",
+                        data: arrval,
+                        backgroundColor: "rgba(255, 99, 132, 0.2)",
+                        borderColor: "rgba(255, 99, 132, 1)",
+                        borderWidth: 1,
+                    },
+                ],
+            };
+
+            var chartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                beginAtZero: true,
+                            },
+                        },
+                    ],
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+
+            };
+            // Create the chart instance
+            myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: "line",
+                data: chartData,
+                options: chartOptions,
+            });
+
+            // Update the chart data
+            setInterval(function () {
+
+                myChart.update();
+            }, 5000);
+
+
+            $.unblockUI();
+        }
+    });
+}
 async function runTopRestoChart() {
 
     var data = {};
+    data.day = day;
     data.startdate = startdate;
     data.enddate = enddate;
+    console.log(data);
     $.ajax({
         url: '/Dashboard/PostMostClickRestaurant',
         data: {
@@ -595,6 +683,7 @@ async function viewRestaurantDetails() {
         document.getElementById("modalTitle").innerHTML = "Restaurant";
         document.getElementById("modalTHTitle").innerHTML = "Restaurant";
         var data = {};
+        data.day = restoday;
         data.startdate = restostartdate;
         data.enddate = restoenddate;
         console.log(data);
@@ -630,6 +719,7 @@ async function viewRestaurantDetails() {
 async function runTopHotelChart() {
 
     var data = {};
+    data.day = day;
     data.startdate = startdate;
     data.enddate = enddate;
     $.ajax({
@@ -755,7 +845,7 @@ async function viewHotelDetails() {
         document.getElementById("modalTitle").innerHTML = "Hotel";
         document.getElementById("modalTHTitle").innerHTML = "Hotel";
         var data = {};
-        var data = {};
+        data.day = day;
         data.startdate = hotelstartdate;
         data.enddate = hotelenddate;
         setTimeout(function () {
@@ -789,6 +879,7 @@ async function viewHotelDetails() {
 async function runTopStoreChart() {
 
     var data = {};
+    data.day = day;
     data.startdate = startdate;
     data.enddate = enddate;
     $.ajax({
@@ -909,6 +1000,7 @@ async function viewStoreDetails() {
         document.getElementById("modalTitle").innerHTML = "Store";
         document.getElementById("modalTHTitle").innerHTML = "Store";
         var data = {};
+        data.day = day;
         data.startdate = storestartdate;
         data.enddate = storeenddate;
         setTimeout(function () {
@@ -942,6 +1034,7 @@ async function viewStoreDetails() {
 async function runTopWellnessChart() {
 
     var data = {};
+    data.day = day;
     data.startdate = startdate;
     data.enddate = enddate;
     $.ajax({
@@ -1062,6 +1155,7 @@ async function viewWellnessDetails() {
         document.getElementById("modalTitle").innerHTML = "Wellness";
         document.getElementById("modalTHTitle").innerHTML = "Wellness";
         var data = {};
+        data.day = day;
         data.startdate = wellnessstartdate;
         data.enddate = wellnessenddate;
         setTimeout(function () {
@@ -1095,6 +1189,7 @@ async function viewWellnessDetails() {
 async function runTopOfferChart() {
 
     var data = {};
+    data.day = day;
     data.startdate = startdate;
     data.enddate = enddate;
     $.ajax({
@@ -1215,6 +1310,7 @@ async function viewOfferDetails() {
         document.getElementById("modalTitle").innerHTML = "Offer";
         document.getElementById("modalTHTitle").innerHTML = "Offer";
         var data = {};
+        data.day = day;
         data.startdate = wellnessstartdate;
         data.enddate = wellnessenddate;
         setTimeout(function () {
@@ -1248,6 +1344,7 @@ async function viewOfferDetails() {
 async function PostClickCountTop2() {
     $.blockUI(reloadLoading);
     var data = {};
+    data.day = day;
     data.startdate = nfcstartdate;
     data.enddate = nfcendtdate;
     setTimeout(function () {
@@ -1281,6 +1378,7 @@ async function PostCallToAction() {
     var data = {};
     var cat = "";
     cat = $('#cta-opt').val();
+    data.day = day;
     data.startdate = ctastartdate;
     data.enddate = ctaendtdate;
     data.category = cat;
@@ -1327,13 +1425,10 @@ async function dateFilter() {
         dateFilterDefault();
 
         type = 1;
-        apiEndpoint = "PostCountAllUser";
     });
     $('#selectDateForTopResto').click(function () {
 
         dateFilterDefault();
-
-
         type = 2;
     });
     $('#selectDateForTopHotel').click(function () {
@@ -1376,85 +1471,13 @@ async function dateFilter() {
         type = 8;
     });
     $('#applyDateFilter').click(function () {
+        day = 0;
         startdate = document.getElementById("dateFrom").value;
         enddate = document.getElementById("dateTo").value;
         document.getElementById("dateFilterModal").style.display = "none";
         
         if (type == 1) {
-            const ctx = document.getElementById("myChart").getContext("2d");
-            const arrdate = new Array();
-            const arrval = new Array();
-            var data = {};
-            data.startdate = startdate;
-            data.enddate = enddate;
-            $.ajax({
-                url: '/Dashboard/' + apiEndpoint,
-                data: {
-                    data: data,
-                },
-                type: "POST",
-                datatype: "json",
-                success: function (response) {
-                    console.log(response);
-
-                    for (var i = 0; i < response.length; i++) {
-                        arrdate.push(response[i].date);
-                        arrval.push(response[i].graph_count);
-                        document.getElementById("new_user").innerHTML = response[0].count;
-                        document.getElementById("percent-registered").innerHTML = response[0].percentage.toFixed(2) + " %";
-                    }
-                    //console.log(arrval);
-                    var chartData = {
-                        labels: arrdate, // conditions to made
-                        datasets: [
-                            {
-                                label: "",
-                                data: arrval,
-                                backgroundColor: "rgba(255, 99, 132, 0.2)",
-                                borderColor: "rgba(255, 99, 132, 1)",
-                                borderWidth: 1,
-                            },
-                        ],
-                    };
-
-                    var chartOptions = {
-                        responsive: true,
-                        maintainAspectRatio: false,
-
-                        scales: {
-                            yAxes: [
-                                {
-                                    ticks: {
-                                        beginAtZero: true,
-                                    },
-                                },
-                            ],
-                        },
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
-                        }
-
-                    };
-                    // Create the chart instance
-                    myChart.destroy();
-                    myChart = new Chart(ctx, {
-                        type: "line",
-                        data: chartData,
-                        options: chartOptions,
-                    });
-
-                    // Update the chart data
-                    setInterval(function () {
-
-                        myChart.update();
-                    }, 5000);
-
-
-                    $.unblockUI();
-                }
-            });
+            postNewUser();
         }
         else if (type != 1 && type != 7 && type != 8) {
             switch (type) {
@@ -1499,6 +1522,61 @@ async function dateFilter() {
     $('#cta-opt').change(function () {
         PostCallToAction();
     });
+    $('#nur').change(function () {
+        day = document.getElementById('nur').value;
+        startdate = null;
+        enddate = null;
+        postNewUser();
+    });
+    $('#cnt-opt').change(function () {
+        day = document.getElementById('cnt-opt').value;
+        startdate = null;
+        enddate = null;
+        PostClickCountTop2();
+    });
+    $('#mcr').change(function () {
+        day = document.getElementById('mcr').value;
+        restoday = document.getElementById('mcr').value;
+        startdate = null;
+        enddate = null;
+        runTopRestoChart();
+    });
+    $('#mch').change(function () {
+        day = document.getElementById('mch').value;
+        hotelday = document.getElementById('mch').value;
+        startdate = null;
+        enddate = null;
+        runTopHotelChart();
+
+     });
+    $('#mcs').change(function () {
+        day = document.getElementById('mcs').value;
+        storeday = document.getElementById('mcs').value;
+        startdate = null;
+        enddate = null;
+        runTopStoreChart();
+
+     });
+
+    $('#mcw').change(function () {
+        day = document.getElementById('mcw').value;
+        wellnessday = document.getElementById('mcw').value;
+        startdate = null;
+        enddate = null;
+        runTopWellnessChart();
+
+     });
+    $('#mcof').change(function () {
+        day = document.getElementById('mcof').value;
+        offerday = document.getElementById('mcof').value;
+        startdate = null;
+        enddate = null;
+
+        runTopOfferChart();
+
+     });
+
+    
      
     
 }
