@@ -62,19 +62,26 @@ var offerstartdate = lastWeekDate;
 var offerenddate = currentDate;
 
 // news feed clicks variable
+var nfcday = 0;
 var nfcstartdate = null;
 var nfcendtdate = null;
 
 // call to action variable
 var ctastartdate = null;
 var ctaendtdate = null;
+var cat = "0";
 
 //Number of Days Filter
 var days = 0;
+
+//Table
+var cntTable;
+var ctaTable;
+var mcrTable;
 async function companyInformationTableLayout() {
    
 
-    companyInfo = $('#cInformation').DataTable({
+    companyInfo = $('#cInformations').DataTable({
         "columnDefs": [
 
             { "width": "280px", "targets": 0 },
@@ -141,54 +148,102 @@ async function companyInformationShowFilter() {
 
 async function getComponyInformation() {
     
-    var data = {};
-    var ciSearch = document.getElementById("ciSearch").value;
-    if (ciSearch == "") {
-        ciSearch = null;
-    }
-   
-    data.corporatename = ciSearch;
-    data.page = spanval;
-    //console.log(data);
-    //data.page = 0;
-    //$.blockUI(reloadLoading);
-    $.ajax({
-        url: '/Dashboard/PostCompanyInformation',
-        async: false,
-        data: {
-            data: data,
-        },
-        type: "POST",
-        datatype: "json",
-        success: function (data) {
-            //console.log(data);
-            companyInfo.clear().draw();
-            //console.log(data[0]);
-            prev = data[0].prevPage;
-            next = data[0].nextPage;
-            currpage = data[0].currentPage;
-            spanval = data[0].currentPage;
-            
-            
+    //var data = {};
+    //var ciSearch = document.getElementById("ciSearch").value;
+    //if (ciSearch == "") {
+    //    ciSearch = null;
+    //}
 
-            companyInfo.clear().draw();
-            for (var i = 0; i < data[0].items.length; i++) {
-                $("#cInformation").dataTable().fnAddData([
-                    "<td><p></p><p style='text-align: left;'>" + data[0].items[i].corporateName + "</p></td>",
-                    "<td><p>" + data[0].items[i].registered + "</p></td>",
-                    "<td><p>" + data[0].items[i].unregistered + "</p></td>",
-                    "<td><p>" + data[0].items[i].registeredVIP + "</p> <p style='font-size: 10px;'>Remaining VIP count: " + data[0].items[i].remainingVip+"</p></td>",
-                    "<td><p>" + data[0].items[i].totalVIP + "</p></td>",
-                    "<td><p>" + data[0].items[i].userCount + "</p></td>",
-                    "<td><p>" + data[0].items[i].totalUser + "</p></td>",
-                ]);
-               
+    //data.corporatename = ciSearch;
+    //data.page = spanval;
+    ////console.log(data);
+    ////data.page = 0;
+    ////$.blockUI(reloadLoading);
+    //$.ajax({
+    //    url: '/Dashboard/PostCompanyInformation',
+    //    async: false,
+    //    data: {
+    //        data: data,
+    //    },
+    //    type: "POST",
+    //    datatype: "json",
+    //    success: function (data) {
+    //        //console.log(data);
+    //        companyInfo.clear().draw();
+    //        //console.log(data[0]);
+    //        prev = data[0].prevPage;
+    //        next = data[0].nextPage;
+    //        currpage = data[0].currentPage;
+    //        spanval = data[0].currentPage;
+
+
+
+    //        companyInfo.clear().draw();
+    //        for (var i = 0; i < data[0].items.length; i++) {
+    //            $("#cInformation").dataTable().fnAddData([
+    //                "<td><p></p><p style='text-align: left;'>" + data[0].items[i].corporateName + "</p></td>",
+    //                "<td><p>" + data[0].items[i].registered + "</p></td>",
+    //                "<td><p>" + data[0].items[i].unregistered + "</p></td>",
+    //                "<td><p>" + data[0].items[i].registeredVIP + "</p> <p style='font-size: 10px;'>Remaining VIP count: " + data[0].items[i].remainingVip+"</p></td>",
+    //                "<td><p>" + data[0].items[i].totalVIP + "</p></td>",
+    //                "<td><p>" + data[0].items[i].userCount + "</p></td>",
+    //                "<td><p>" + data[0].items[i].totalUser + "</p></td>",
+    //            ]);
+
+    //        }
+
+    //    }
+
+    //});
+    //SearchComponyInformation();
+    new DataTable('#cInformation', {
+        ajax: {
+            url: '/Dashboard/GetCompanyInformation',
+            type: "GET",
+            dataType: "json",
+            processing: true,
+            serverSide: true,
+            complete: function (xhr) {
+                 //console.log(xhr);
+            },
+            error: function (err) {
+                alert(err.responseText);
             }
+        },
+        columns: [
+            {
+                data: 'corporateName',
+                render: function (data, type, row) {
+                    return '<p style="text-align: left">' + data + '</p>';
+                }
+            },
+            {
+                data: 'registered'
+            },
+            {
+                data: 'unregistered'
+            },
+            {
+                data: 'registeredVIP',
+                render: function (data, type, row) {
+                    let vip = '<td><p>' + data + '</p>' +
+                            '<p style="font-size: 10px"> Remaining VIP count: ' + row.remainingVip + '</p></td > ';
 
-        }
-        
+                    return vip;
+                }
+                
+            },
+            {
+                data: 'totalVIP'
+            },
+            {
+                data: 'userCount'
+            },
+            {
+                data: 'totalUser'
+            }
+        ]
     });
-    SearchComponyInformation();
 }
 async function SearchComponyInformation() {
   
@@ -436,7 +491,7 @@ async function downloadCompanyInfortmation() {
                 totalUserCount = true;
             }
             
-            console.log(data);
+            //console.log(data);
             //data.Registered = registered;
             //data.unregistered = unregistered;
             //data.registeredVIP = vip;
@@ -556,10 +611,10 @@ async function postNewUser() {
 async function runTopRestoChart() {
 
     var data = {};
-    data.day = day;
+    data.day = restoday;
     data.startdate = startdate;
     data.enddate = enddate;
-    console.log(data);
+    //console.log(data);
     $.ajax({
         url: '/Dashboard/PostMostClickRestaurant',
         data: {
@@ -569,7 +624,6 @@ async function runTopRestoChart() {
         datatype: "json",
         success: function (response) {
             //console.log(response);
-
             var sum = 0;
             for (var x = 3; x < response.length; x++) {
                 sum += response[x].total;
@@ -676,50 +730,64 @@ async function runTopRestoChart() {
     });
 }
 async function viewRestaurantDetails() {
+
     $('#mcr_vm').click(function () {
+       
+        // Check if DataTable is already initialized
+        
         document.getElementById("btn-mcs").style.display = "none";
         document.getElementById("btn-mch").style.display = "none";
         document.getElementById("btn-mcr").style.display = "block";
+        document.getElementById("btn-mco").style.display = "none";
+        document.getElementById("btn-mcw").style.display = "none";
         document.getElementById("modalTitle").innerHTML = "Restaurant";
         document.getElementById("modalTHTitle").innerHTML = "Restaurant";
-        var data = {};
-        data.day = restoday;
-        data.startdate = restostartdate;
-        data.enddate = restoenddate;
-        console.log(data);
-         $.blockUI(reloadLoading);
-        setTimeout(function () {
-            $.ajax(
-                {
-                    url: "/Dashboard/PostMostClickRestaurant",
-                    data: {
-                        data: data,
-                    },
-                    type: "POST",
-                    datatype: "json"
-                }).done(function (data) {
 
-                    mcrtable.clear().draw();
-                    for (var i = 0; i < data.length; i++) {
-                        $("#mcr_call").dataTable().fnAddData([
-                            "<td><p></p><p>" + data[i].business + "</p></td>",
-                            "<td><p>" + data[i].count + "</p></td>",
-                            "<td><p>" + data[i].total + " %" + "</p></td>",
-
-                        ]);
-                    }
-                    $.unblockUI();
-                }).fail(function () {
-                    alert("There was an Error When Loading Data...");
-                });
-        }, 100);
+        mcrTable.destroy();
+        viewRestoDetails();
         $('#ShowMostClickModal').modal('show');
+    });
+}
+async function viewRestoDetails() {
+    var data = {};
+    data.day = restoday;
+    data.startdate = restostartdate;
+    data.enddate = restoenddate;
+    mcrTable = new DataTable('#mcr_call', {
+        ajax: {
+            url: "/Dashboard/PostViewMostClickRestaurant",
+            type: "POST",
+            data: {
+                data: data
+            },
+            dataType: "json",
+            processing: true,
+            serverSide: true,
+            complete: function (xhr) {
+                //console.log(xhr);
+            },
+            error: function (err) {
+                //alert(err.responseText);
+                alert("There was an Error When Loading Data...");
+            }
+        },
+        columns: [
+            {
+                data: 'business'
+            },
+            {
+                data: 'count'
+            },
+            {
+                data: 'total'
+            }
+        ]
     });
 }
 async function runTopHotelChart() {
 
     var data = {};
-    data.day = day;
+    data.day = hotelday;
     data.startdate = startdate;
     data.enddate = enddate;
     $.ajax({
@@ -842,44 +910,53 @@ async function viewHotelDetails() {
         document.getElementById("btn-mcs").style.display = "none";
         document.getElementById("btn-mch").style.display = "block";
         document.getElementById("btn-mcr").style.display = "none";
+        document.getElementById("btn-mco").style.display = "none";
+        document.getElementById("btn-mcw").style.display = "none";
         document.getElementById("modalTitle").innerHTML = "Hotel";
         document.getElementById("modalTHTitle").innerHTML = "Hotel";
         var data = {};
-        data.day = day;
+        data.day = hotelday;
         data.startdate = hotelstartdate;
         data.enddate = hotelenddate;
-        setTimeout(function () {
-            $.ajax(
-                {
-                    url: "/Dashboard/PostMostClickedHospitalityv2",
-                    data: {
-                        data: data,
-                    },
-                    type: "POST",
-                    datatype: "json"
-                }).done(function (data) {
 
-                    mcrtable.clear().draw();
-                    for (var i = 0; i < data.length; i++) {
-                        $("#mcr_call").dataTable().fnAddData([
-                            "<td><p></p><p>" + data[i].business + "</p></td>",
-                            "<td><p>" + data[i].count + "</p></td>",
-                            "<td><p>" + data[i].total + " %" + "</p></td>",
-
-                        ]);
-                    }
-                    $.unblockUI();
-                }).fail(function () {
+        mcrTable.destroy();
+        mcrTable = new DataTable('#mcr_call', {
+            ajax: {
+                url: "/Dashboard/PostViewClickedHospitalityv2",
+                type: "POST",
+                data: {
+                    data: data
+                },
+                dataType: "json",
+                processing: true,
+                serverSide: true,
+                complete: function (xhr) {
+                    //console.log(xhr);
+                },
+                error: function (err) {
+                    //alert(err.responseText);
                     alert("There was an Error When Loading Data...");
-                });
-        }, 100);
+                }
+            },
+            columns: [
+                {
+                    data: 'business'
+                },
+                {
+                    data: 'count'
+                },
+                {
+                    data: 'total'
+                }
+            ]
+        });
         $('#ShowMostClickModal').modal('show');
     });
 }
 async function runTopStoreChart() {
 
     var data = {};
-    data.day = day;
+    data.day = storeday;
     data.startdate = startdate;
     data.enddate = enddate;
     $.ajax({
@@ -997,44 +1074,52 @@ async function viewStoreDetails() {
         document.getElementById("btn-mcs").style.display = "block";
         document.getElementById("btn-mch").style.display = "none";
         document.getElementById("btn-mcr").style.display = "none";
+        document.getElementById("btn-mco").style.display = "none";
+        document.getElementById("btn-mcw").style.display = "none";
         document.getElementById("modalTitle").innerHTML = "Store";
         document.getElementById("modalTHTitle").innerHTML = "Store";
         var data = {};
-        data.day = day;
+        data.day = storeday;
         data.startdate = storestartdate;
         data.enddate = storeenddate;
-        setTimeout(function () {
-            $.ajax(
-                {
-                    url: "/Dashboard/PostMostCickStorev2",
-                    data: {
-                        data: data,
-                    },
-                    type: "POST",
-                    datatype: "json"
-                }).done(function (data) {
-
-                    mcrtable.clear().draw();
-                    for (var i = 0; i < data.length; i++) {
-                        $("#mcr_call").dataTable().fnAddData([
-                            "<td><p></p><p>" + data[i].business + "</p></td>",
-                            "<td><p>" + data[i].count + "</p></td>",
-                            "<td><p>" + data[i].total + " %" + "</p></td>",
-
-                        ]);
-                    }
-                    $.unblockUI();
-                }).fail(function () {
+        mcrTable.destroy();
+        mcrTable = new DataTable('#mcr_call', {
+            ajax: {
+                url: "/Dashboard/PostViewMostCickStorev2",
+                type: "POST",
+                data: {
+                    data: data
+                },
+                dataType: "json",
+                processing: true,
+                serverSide: true,
+                complete: function (xhr) {
+                    //console.log(xhr);
+                },
+                error: function (err) {
+                    //alert(err.responseText);
                     alert("There was an Error When Loading Data...");
-                });
-        }, 100);
+                }
+            },
+            columns: [
+                {
+                    data: 'business'
+                },
+                {
+                    data: 'count'
+                },
+                {
+                    data: 'total'
+                }
+            ]
+        });
         $('#ShowMostClickModal').modal('show');
     });
 }
 async function runTopWellnessChart() {
 
     var data = {};
-    data.day = day;
+    data.day = wellnessday;
     data.startdate = startdate;
     data.enddate = enddate;
     $.ajax({
@@ -1151,45 +1236,53 @@ async function viewWellnessDetails() {
     $('#mcw_vm').click(function () {
         document.getElementById("btn-mcs").style.display = "none";
         document.getElementById("btn-mch").style.display = "none";
-        document.getElementById("btn-mcr").style.display = "block";
+        document.getElementById("btn-mcr").style.display = "none";
+        document.getElementById("btn-mco").style.display = "none";
+        document.getElementById("btn-mcw").style.display = "block";
         document.getElementById("modalTitle").innerHTML = "Wellness";
         document.getElementById("modalTHTitle").innerHTML = "Wellness";
         var data = {};
-        data.day = day;
+        data.day = wellnessday;
         data.startdate = wellnessstartdate;
         data.enddate = wellnessenddate;
-        setTimeout(function () {
-            $.ajax(
-                {
-                    url: "/Dashboard/PostMostCickWellnessv2",
-                    data: {
-                        data: data,
-                    },
-                    type: "POST",
-                    datatype: "json"
-                }).done(function (data) {
-
-                    mcrtable.clear().draw();
-                    for (var i = 0; i < data.length; i++) {
-                        $("#mcr_call").dataTable().fnAddData([
-                            "<td><p></p><p>" + data[i].business + "</p></td>",
-                            "<td><p>" + data[i].count + "</p></td>",
-                            "<td><p>" + data[i].total + " %" + "</p></td>",
-
-                        ]);
-                    }
-                    $.unblockUI();
-                }).fail(function () {
+        mcrTable.destroy();
+        mcrTable = new DataTable('#mcr_call', {
+            ajax: {
+                url: "/Dashboard/PostViewMostCickWellnessv2",
+                type: "POST",
+                data: {
+                    data: data
+                },
+                dataType: "json",
+                processing: true,
+                serverSide: true,
+                complete: function (xhr) {
+                    //console.log(xhr);
+                },
+                error: function (err) {
+                    //alert(err.responseText);
                     alert("There was an Error When Loading Data...");
-                });
-        }, 100);
+                }
+            },
+            columns: [
+                {
+                    data: 'business'
+                },
+                {
+                    data: 'count'
+                },
+                {
+                    data: 'total'
+                }
+            ]
+        });
         $('#ShowMostClickModal').modal('show');
     });
 }
 async function runTopOfferChart() {
 
     var data = {};
-    data.day = day;
+    data.day = offerday;
     data.startdate = startdate;
     data.enddate = enddate;
     $.ajax({
@@ -1306,103 +1399,179 @@ async function viewOfferDetails() {
     $('#mco_vm').click(function () {
         document.getElementById("btn-mcs").style.display = "none";
         document.getElementById("btn-mch").style.display = "none";
-        document.getElementById("btn-mcr").style.display = "block";
+        document.getElementById("btn-mcr").style.display = "none";
+        document.getElementById("btn-mco").style.display = "block";
+        document.getElementById("btn-mcw").style.display = "none";
         document.getElementById("modalTitle").innerHTML = "Offer";
         document.getElementById("modalTHTitle").innerHTML = "Offer";
         var data = {};
-        data.day = day;
-        data.startdate = wellnessstartdate;
-        data.enddate = wellnessenddate;
-        setTimeout(function () {
-            $.ajax(
-                {
-                    url: "/Dashboard/PostMostCickOfferv2",
-                    data: {
-                        data: data,
-                    },
-                    type: "POST",
-                    datatype: "json"
-                }).done(function (data) {
-
-                    mcrtable.clear().draw();
-                    for (var i = 0; i < data.length; i++) {
-                        $("#mcr_call").dataTable().fnAddData([
-                            "<td><p></p><p>" + data[i].business + "</p></td>",
-                            "<td><p>" + data[i].count + "</p></td>",
-                            "<td><p>" + data[i].total + " %" + "</p></td>",
-
-                        ]);
-                    }
-                    $.unblockUI();
-                }).fail(function () {
+        data.day = offerday;
+        data.startdate = offerstartdate;
+        data.enddate = offerenddate;
+        mcrTable.destroy();
+        mcrTable = new DataTable('#mcr_call', {
+            ajax: {
+                url: "/Dashboard/PostViewMostCickOfferv2",
+                type: "POST",
+                data: {
+                    data: data
+                },
+                dataType: "json",
+                processing: true,
+                serverSide: true,
+                complete: function (xhr) {
+                    //console.log(xhr);
+                },
+                error: function (err) {
+                    //alert(err.responseText);
                     alert("There was an Error When Loading Data...");
-                });
-        }, 100);
+                }
+            },
+            columns: [
+                {
+                    data: 'business'
+                },
+                {
+                    data: 'count'
+                },
+                {
+                    data: 'total'
+                }
+            ]
+        });
         $('#ShowMostClickModal').modal('show');
     });
 }
 async function PostClickCountTop2() {
-    $.blockUI(reloadLoading);
+    //$.blockUI(reloadLoading);
     var data = {};
     data.day = day;
     data.startdate = nfcstartdate;
     data.enddate = nfcendtdate;
-    setTimeout(function () {
-        $.ajax(
-            {
-                url: "/Dashboard/PostMostClickCounts",
-                data: {
-                    data: data,
-                },
-                type: "POST",
-                datatype: "json"
-            }).done(function (data) {
-                // 
-                for (var i = 0; i < data.length; i++) {
+    //setTimeout(function () {
+    //    $.ajax(
+    //        {
+    //            url: "/Dashboard/PostMostClickCounts",
+    //            data: {
+    //                data: data,
+    //            },
+    //            type: "POST",
+    //            datatype: "json"
+    //        }).done(function (data) {
+    //            //
+    //            for (var i = 0; i < data.length; i++) {
 
-                    $("#tbl_cnt tbody").append([
-                        "<tr>" +
-                        "<td>" + data[i].module + "</td>" +
-                        "<td>" + data[i].count + "</td>", + "</tr>"
-                    ]);
+    //                $("#tbl_cnt tbody").append([
+    //                    "<tr>" +
+    //                    "<td>" + data[i].module + "</td>" +
+    //                    "<td>" + data[i].count + "</td>", + "</tr>"
+    //                ]);
 
-                }
+    //            }
 
-                $.unblockUI();
-            }).fail(function () {
+    //            $.unblockUI();
+    //        }).fail(function () {
+    //            alert("There was an Error When Loading Data...");
+    //        });
+    //}, 100);
+    //console.log(data);
+
+   
+    cntTable = new DataTable('#tbl_cnt', {
+        ajax: {
+            url: "/Dashboard/PostMostClickCounts",
+            type: "POST",
+            data: {
+                data: data
+            },
+            dataType: "json",
+            processing: true,
+            serverSide: true,
+            complete: function (xhr) {
+                // console.log(xhr);
+            },
+            error: function (err) {
+                //alert(err.responseText);
                 alert("There was an Error When Loading Data...");
-            });
-    }, 100);
+            }
+        },
+        columns: [
+            {
+                title: "Module",
+                data: 'module'
+            },
+            {
+                title: "Count",
+                data: 'count'
+            }
+        ]
+    });
 }
 async function PostCallToAction() {
     var data = {};
-    var cat = "";
-    cat = $('#cta-opt').val();
+    //cat = $('#cta-opt').val();
     data.day = day;
     data.startdate = ctastartdate;
     data.enddate = ctaendtdate;
     data.category = cat;
-    $.ajax({
-        url: '/Dashboard/PostCallToActions',
-        data: {
-            data: data,
-        },
-        type: "POST",
-        datatype: "json",
-        success: function (data) {
-            //console.log(data);
-            cAbtable.clear().draw();
-            for (var i = 0; i < data.length; i++) {
-                $("#cAction_table").dataTable().fnAddData([
-                    "<td><p></p><p>" + data[i].business + "</p></td>",
-                    "<td><p>" + data[i].category + "</p></td>",
-                    "<td><p>" + data[i].callCount + "</p></td>",
-                    "<td><p>" + data[i].emailCount + "</p></td>",
-                    "<td><p>" + data[i].bookCount + "</p></td>",
+    //console.log(data);
+    //$.ajax({
+    //    url: '/Dashboard/PostCallToActions',
+    //    data: {
+    //        data: data,
+    //    },
+    //    type: "POST",
+    //    datatype: "json",
+    //    success: function (data) {
+    //        //console.log(data);
+    //        //cAbtable.clear().draw();
+    //        for (var i = 0; i < data.length; i++) {
+    //            $("#cAction_table").dataTable().fnAddData([
+    //                "<td><p></p><p>" + data[i].business + "</p></td>",
+    //                "<td><p>" + data[i].category + "</p></td>",
+    //                "<td><p>" + data[i].callCount + "</p></td>",
+    //                "<td><p>" + data[i].emailCount + "</p></td>",
+    //                "<td><p>" + data[i].bookCount + "</p></td>",
 
-                ]);
+    //            ]);
+    //        }
+    //    }
+    //});
+    ctaTable = new DataTable('#cAction_table', {
+        ajax: {
+            url: "/Dashboard/PostCallToActions",
+            type: "POST",
+            data: {
+                data: data
+            },
+            dataType: "json",
+            processing: true,
+            serverSide: true,
+            complete: function (xhr) {
+                 //console.log(xhr);
+            },
+            error: function (err) {
+                //alert(err.responseText);
+                alert("There was an Error When Loading Data...");
             }
-        }
+        },
+        columns: [
+            {
+                data: 'business'
+            },
+            {
+                data: 'category'
+            },
+            {
+                data: 'callCount'
+            },
+            {
+                data: 'emailCount'
+            },
+            {
+                data: 'bookCount'
+            }
+        ]
     });
 }
 async function dateFilterDefault() {
@@ -1509,8 +1678,10 @@ async function dateFilter() {
             }
         }
         else if (type == 8) {
+            day = 0;
             nfcstartdate = startdate;
             nfcendtdate = enddate;
+            cntTable.destroy();
             PostClickCountTop2();
         }
         else {
@@ -1530,19 +1701,19 @@ async function dateFilter() {
     });
     $('#cnt-opt').change(function () {
         day = document.getElementById('cnt-opt').value;
-        startdate = null;
-        enddate = null;
+        nfcstartdate = null;
+        nfcenddate = null;
+
+        cntTable.destroy();
         PostClickCountTop2();
     });
     $('#mcr').change(function () {
-        day = document.getElementById('mcr').value;
         restoday = document.getElementById('mcr').value;
         startdate = null;
         enddate = null;
         runTopRestoChart();
     });
     $('#mch').change(function () {
-        day = document.getElementById('mch').value;
         hotelday = document.getElementById('mch').value;
         startdate = null;
         enddate = null;
@@ -1550,7 +1721,6 @@ async function dateFilter() {
 
      });
     $('#mcs').change(function () {
-        day = document.getElementById('mcs').value;
         storeday = document.getElementById('mcs').value;
         startdate = null;
         enddate = null;
@@ -1559,7 +1729,6 @@ async function dateFilter() {
      });
 
     $('#mcw').change(function () {
-        day = document.getElementById('mcw').value;
         wellnessday = document.getElementById('mcw').value;
         startdate = null;
         enddate = null;
@@ -1567,7 +1736,6 @@ async function dateFilter() {
 
      });
     $('#mcof').change(function () {
-        day = document.getElementById('mcof').value;
         offerday = document.getElementById('mcof').value;
         startdate = null;
         enddate = null;
@@ -1583,26 +1751,27 @@ async function dateFilter() {
 
 
 
-async function GetAllUserCount() {
-    var data = {};
-    data.startdate = null;
-    data.enddate = DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"));
+//async function GetAllUserCount() {
+//    var data = {};
+//    data.day = 0;
+//    data.startdate = null;
+//    data.enddate = null;
     
-    $.ajax(
-        {
-            url: "/Dashboard/PostCountAllUser",
-            data: {
-                data: data,
-            },
-            type: "POST",
-            datatype: "json"
-        }).done(function (data) {
-
-            for (var i = 0; i < data.length; i++) {
-                document.getElementById("all-user").innerHTML = data[i].count;
-            }
-            $.unblockUI();
-        }).fail(function () {
-            alert("There was an Error When Loading Data...CountAllUser");
-        });
-}
+//    $.ajax(
+//        {
+//            url: "/Dashboard/PostCountAllUser",
+//            data: {
+//                data: data,
+//            },
+//            type: "POST",
+//            datatype: "json"
+//        }).done(function (data) {
+//            console.log(data);
+//            for (var i = 0; i < data.length; i++) {
+//                document.getElementById("all-user").innerHTML = data[i].count;
+//            }
+//            $.unblockUI();
+//        }).fail(function () {
+//            alert("There was an Error When Loading Data...CountAllUser");
+//        });
+//}
