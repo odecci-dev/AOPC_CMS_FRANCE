@@ -327,7 +327,8 @@ tr th {
 /*    display: none;*/
 }
 
-#family-member-table {
+#family-member-table,
+#corporate-family-member-table {
     border: 1px solid var(--dark);
     border-radius: 15px;
     padding-top: 0px;

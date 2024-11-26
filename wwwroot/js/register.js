@@ -1,4 +1,4 @@
-﻿const { async } = require("postcss-js");
+﻿const { 04async } = require("postcss-js");
 var filtermodal = document.getElementById("filtermodal");
 
 
@@ -77,7 +77,32 @@ async function userRegistrationListTableLayout() {
     //    , "oLanguage": { "sZeroRecords": "", "sEmptyTable": "" }
 
     //});
+    
+    var corpfamilyMemberTable = $('#corporate-family-member-table').DataTable({
+        "columnDefs": [
 
+            { "width": "150px", "targets": 0 },
+            { "width": "150px", "targets": 1 },
+            { "width": "150px", "targets": 2 },
+            { "width": "200px", "targets": 3 },
+            { "width": "200px", "targets": 4 }
+        ],
+        "deferRender": true,
+        "bPaginate": false,
+        "bFilter": false,
+        "stripeClasses": [],
+        "ordering": false,
+        "ordering": false,
+        "info": false,
+        "bInfo": false,
+        "bAutoWidth": false,
+        "bLengthChange": false,
+        "aLengthMenu": [10],
+        "paging": true,
+        "searching": false,
+        "oLanguage": { "sZeroRecords": "", "sEmptyTable": "" }
+
+    });
     familyMemberTable = $('#family-member-table').DataTable({
         "columnDefs": [
 
@@ -408,11 +433,12 @@ async function UserShowSelectFilter() {
         });
 
     $.ajax({
-        url: "/Corporate/GetCorporateList",
+        url: "/Corporate/GetCompanyList",
         data: {},
         type: "GET",
         datatype: "json"
     }).done(function (data) {
+        //console.log(data[0].corporateName);
         $("#corporateFilter").empty();
         $("#corporateFilter").append('<option value="">-Select Corporate-</option>');
         for (var i = 0; i < data.length; i++) {
@@ -687,13 +713,11 @@ async function getUserRegistration() {
 }
 async function displayFamilyMember() {
     
-    var familyMemberTables = document.getElementById("family-member");
     var data = {};
     data.FamilyUserId = FamilyUserId;
-    //console.log(data.Id);
-    //data.FamilyUserId = 2;
     data.page = spanval;
     data.pageSize = spanval;
+
     $.ajax({
         url: '/Register/PostDisplayVIPFamilyMember',
         //async: false,
@@ -762,22 +786,132 @@ async function displayFamilyMember() {
                     //'<td><p>' + data[0].data[i].status + '</p></td>',
                     '<td><p>' + tdbuttons + '</p></td>'
                 ]);
+                $('#corporate-family-member-table').dataTable().fnAddData([
+                    '<td><p>' + data[0].data[i].fullname + '</p></td>',
+                    '<td><p>' + data[0].data[i].relationship + '</p></td>',
+                    '<td><p>' + data[0].data[i].applicationStatus + '</p></td>',
+                    '<td><p>' + data[0].data[i].dateCreated + '</p></td>',
+                    //'<td><p>' + data[0].data[i].status + '</p></td>',
+                    '<td><p>' + tdbuttons + '</p></td>'
+                ]);
 
             }
 
         }
 
     });
+
+    //new DataTable('#family-member-table', {
+    //    ajax: {
+    //        url: "/Register/PostDisplayVIPFamilyMember",
+    //        data: {
+    //            data: data,
+    //        },
+    //        type: "POST",
+    //        dataType: "json",
+    //        processing: true,
+    //        serverSide: true,
+    //        complete: function (xhr) {
+    //            //console.log(xhr);
+    //        },
+    //        error: function (err) {
+    //            //alert(err.responseText);
+    //            alert("There was an Error When Loading Data...");
+    //        }
+    //    },
+    //    columnDefs: [
+    //        { "width": "150px", "targets": 2 },
+    //        { "width": "150px", "targets": 4 }
+    //    ],
+    //    columns: [
+    //        {
+    //            data: 'fname',
+    //            render: function (data, type, row) {
+    //                var tdbuttons =
+    //                    '<div class="approve-btn">' +
+    //                    //"<input type='button' value='Approve' id='approveBtn' />" +
+
+    //                    '<a id="approveBtn"' +
+    //                    '  data-id="' + data[0].data[i].id +
+    //                    '" data-fullname="' + data[0].data[i].fullname +
+    //                    '" data-relationship="' + data[0].data[i].relationship +
+    //                    '" data-familyuserid="' + data[0].data[i].familyUserId +
+    //                    '" data-applicationstatus="' + data[0].data[i].applicationStatus +
+    //                    '" data-status="' + data[0].data[i].status +
+    //                    '" data-datecreated="' + data[0].data[i].dateCreated +
+    //                    '">' +
+    //                    "<span >Approve</span>" + " </a>" +
+
+    //                    '<a id="declineBtn"' +
+    //                    '  data-id="' + data[0].data[i].id +
+    //                    '" data-fullname="' + data[0].data[i].fullname +
+    //                    '" data-relationship="' + data[0].data[i].relationship +
+    //                    '" data-familyuserid="' + data[0].data[i].familyUserId +
+    //                    '" data-applicationstatus="' + data[0].data[i].applicationStatus +
+    //                    '" data-status="' + data[0].data[i].status +
+    //                    '" data-datecreated="' + data[0].data[i].dateCreated +
+    //                    '">' +
+    //                    "<span >Decline</span>" + " </a>" +
+    //                    "</div > ";
+    //                if (data[0].data[i].applicationStatus == "Approved") {
+    //                    tdbuttons =
+    //                        '<div class="approve-btn">' +
+    //                        '<a id="declineBtn"' +
+    //                        '  data-id="' + data[0].data[i].id +
+    //                        '" data-fullname="' + data[0].data[i].fullname +
+    //                        '" data-relationship="' + data[0].data[i].relationship +
+    //                        '" data-familyuserid="' + data[0].data[i].familyUserId +
+    //                        '" data-applicationstatus="' + data[0].data[i].applicationStatus +
+    //                        '" data-status="' + data[0].data[i].status +
+    //                        '" data-datecreated="' + data[0].data[i].dateCreated +
+    //                        '">' +
+    //                        "<span >Decline</span>" + " </a>" +
+    //                        "</div > ";
+    //                }
+
+    //                return tdbuttons;
+    //            }
+    //        },
+    //        {
+    //            data: 'username'
+    //        },
+    //        {
+    //            data: 'email'
+    //        },
+    //        {
+    //            data: 'gender'
+    //        },
+    //        {
+    //            data: 'corporatename'
+    //        },
+    //        {
+    //            data: 'position'
+    //        },
+    //        {
+    //            data: 'status'
+    //        },
+    //        {
+    //            data: 'dateCreated'
+    //        }
+    //    ]
+    //});
+
+
 }
 async function editUserRegistration() {
     var familyMemberTables = document.getElementById("family-member"); 
+    var corpfamilyMemberTables = document.getElementById("corporate-family-member"); 
     $('#add-newuser').click(function () {
         familyMemberTables.style.display = "none";
     }); 
-
+    $('#add-corporate-user').click(function () {
+        corpfamilyMemberTables.style.display = "none";
+    });
     $('#register-table').on('click', '.tbl-edit', function () {
         isFmilyUserVIP = $(this).data("vipstats");
         FamilyUserId = $(this).data("id");
+
+        //console.log(isFmilyUserVIP);
         //console.log(isFmilyUserVIP);
         if (isFmilyUserVIP == 1) {
             familyMemberTables.style.display = "block";
@@ -788,6 +922,18 @@ async function editUserRegistration() {
         }
     });
     
+    $('#corporate-user-table').on('click', '.corp-tbl-edit', function () {
+        isFmilyUserVIP = $(this).data("vipstats");
+        FamilyUserId = $(this).data("id");
+        //console.log(isFmilyUserVIP);
+        if (isFmilyUserVIP == 1) {
+            corpfamilyMemberTables.style.display = "block";
+            displayFamilyMember();
+        }
+        else {
+            corpfamilyMemberTables.style.display = "none";
+        }
+    });
 }
 async function changeFamilyMemberStatus() {
     $('#family-member-table').on('click', '#approveBtn', function () {
@@ -1012,7 +1158,7 @@ async function getCorporateRegistration() {
                         'data-utype="' + row.userType + '"' +
                         'data-corporateid="' + row.corporateID + '"' +
                         'data-displayimg="' + row.filePath + '"' +
-                        'data-vipstats="' + row.isVIP + '> ' +
+                        'data-vipstats="' + row.isVIP + '"> ' +
                         '<svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">' +
                         '<path d="M5.02558 1.92456H1.89457C1.65732 1.92456 1.42978 2.0164 1.26201 2.17986C1.09425 2.34333 1 2.56504 1 2.79621V8.89779C1 9.12896 1.09425 9.35067 1.26201 9.51414C1.42978 9.6776 1.65732 9.76944 1.89457 9.76944H8.15659C8.39385 9.76944 8.62139 9.6776 8.78915 9.51414C8.95692 9.35067 9.05117 9.12896 9.05117 8.89779V5.847" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>' +
                         '<path d="M8.38023 1.27079C8.55817 1.09741 8.79951 1 9.05116 1C9.30281 1 9.54415 1.09741 9.72209 1.27079C9.90003 1.44417 10 1.67933 10 1.92453C10 2.16973 9.90003 2.40488 9.72209 2.57827L5.47286 6.71862L3.68372 7.15445L4.131 5.41114L8.38023 1.27079Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>' +
@@ -1109,7 +1255,7 @@ async function getOysterAdmin() {
             processing: true,
             serverSide: true,
             complete: function (xhr) {
-                console.log(xhr);
+                //console.log(xhr);
             },
             error: function (err) {
                 //alert(err.responseText);

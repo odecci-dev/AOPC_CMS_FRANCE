@@ -450,12 +450,16 @@ async function _ShowMembershipOption() {
 async function ShowMembershipOption() {
   $.blockUI(reloadLoading);
   setTimeout(function () {
-    $.ajax({ url: "/Corporate/GetMembershipList", data: {}, type: "GET", datatype: "json" }).done(function (data) {
+      $.ajax({ url: "/Corporate/GetMembershipListOption", data: {}, type: "GET", datatype: "json" }).done(function (data) {
+          //console.log(data);
       
       $("#mem-option").empty();
       $("#mem-option").append('<option value="0">-Select Tier-</option>');
+      $("#corp-mem-option").empty();
+      $("#corp-mem-option").append('<option value="0">-Select Tier-</option>');
       for (var i = 0; i < data.length; i++) {
         $("#mem-option").append('<option value="' + data[i].id + '">' + data[i].membershipName + "</option>");
+        $("#corp-mem-option").append('<option value="' + data[i].id + '">' + data[i].membershipName + "</option>");
       }
       $.unblockUI();
     }).fail(function () {
@@ -562,7 +566,7 @@ async function ShowCorporateOption() {
 async function CorpShowCorporateOption() {
   $.blockUI(reloadLoading);
   setTimeout(function () {
-    $.ajax({ url: "/Corporate/GetCorporateList", data: {}, type: "GET", datatype: "json" }).done(function (data) { // // 
+      $.ajax({ url: "/Corporate/GetCompanyList", data: {}, type: "GET", datatype: "json" }).done(function (data) { // // 
       $("#corp-corporate-option").empty();
       $("#corp-corporate-option").append('<option value="0">-Select Corporate-</option>');
       for (var i = 0; i < data.length; i++) {

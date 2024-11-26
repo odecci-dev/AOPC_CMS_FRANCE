@@ -158,7 +158,7 @@ async function getComponyInformation() {
     //data.page = spanval;
     ////console.log(data);
     ////data.page = 0;
-    ////$.blockUI(reloadLoading);
+    $.blockUI(reloadLoading);
     //$.ajax({
     //    url: '/Dashboard/PostCompanyInformation',
     //    async: false,
@@ -1443,7 +1443,7 @@ async function viewOfferDetails() {
     });
 }
 async function PostClickCountTop2() {
-    //$.blockUI(reloadLoading);
+    $.blockUI(reloadLoading);
     var data = {};
     data.day = day;
     data.startdate = nfcstartdate;
@@ -1644,7 +1644,12 @@ async function dateFilter() {
         startdate = document.getElementById("dateFrom").value;
         enddate = document.getElementById("dateTo").value;
         document.getElementById("dateFilterModal").style.display = "none";
-        
+        restoday = 0;
+        hotelday = 0;
+        storeday = 0;
+        wellnessday = 0;
+        offerday = 0;
+        //console.log(type);
         if (type == 1) {
             postNewUser();
         }

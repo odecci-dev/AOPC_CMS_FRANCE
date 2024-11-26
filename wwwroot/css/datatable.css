@@ -929,3 +929,6 @@ html.dark {
 *[dir=rtl] div.dt-container div.dt-search input {
     margin: 0 3px 0 0;
 }
+.dataTables tbody tr {
+    max-height: 35px !important; /* or whatever height you need to make them all consistent */
+}
