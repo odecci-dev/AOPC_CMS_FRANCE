@@ -24,7 +24,7 @@ toggle.addEventListener("click", function () {
 
 // Top User Graph, Please 4 data only and make sure that the data value are converted to percentage
 async function ShowPiegraphMostClickRestaurant() {
-    $.blockUI(reloadLoading);
+    //$.blockUI(reloadLoading);
     setTimeout(function () {
         $.ajax(
             {
@@ -118,14 +118,14 @@ async function ShowPiegraphMostClickRestaurant() {
                     };
 
                     pieGraphMovement("#to-pie-graph", topBusinesOutlet);
-                $.unblockUI();
+                //$.unblockUI();
             }).fail(function () {
                 alert("There was an Error When Loading Data...");
             });
     }, 100);
 }
 async function ShowPiegraphMostClickHospitality() {
-    $.blockUI(reloadLoading);
+    //$.blockUI(reloadLoading);
     setTimeout(function () {
         $.ajax(
             {
@@ -219,14 +219,14 @@ async function ShowPiegraphMostClickHospitality() {
 
                 pieGraphMovement("#th-pie-graph", topBusinesOutlet);
 
-                $.unblockUI();
+                //$.unblockUI();
             }).fail(function () {
                 alert("There was an Error When Loading Data...");
             });
     }, 100);
 }
 async function ShowPiegraphMostClickStore() {
-    $.blockUI(reloadLoading);
+    //$.blockUI(reloadLoading);
     setTimeout(function () {
         $.ajax(
             {
@@ -320,7 +320,7 @@ async function ShowPiegraphMostClickStore() {
 
                 pieGraphMovement("#ts-pie-graph", topBusinesOutlet);
 
-                $.unblockUI();
+                //$.unblockUI();
             }).fail(function () {
                 alert("There was an Error When Loading Data...");
             });
@@ -376,7 +376,7 @@ async function ShowVendorOpt() {
   });
 }
 async function ShowPositionName() {
-  $.blockUI(reloadLoading);
+  //$.blockUI(reloadLoading);
   setTimeout(function () {
     $.ajax({ url: "/Register/GetPosition", data: {}, type: "GET", datatype: "json" }).done(function (data) {
       $("#position").empty();
@@ -384,14 +384,14 @@ async function ShowPositionName() {
       for (var i = 0; i < data.length; i++) {
         $("#position").append('<option value="' + data[i].id + '">' + data[i].name + "</option>");
       }
-      $.unblockUI();
+      //$.unblockUI();
     }).fail(function () {
       alert("There was an Error When Loading Data...");
     });
   }, 100);
 }
 async function ShowPositionName() {
-  $.blockUI(reloadLoading);
+  //$.blockUI(reloadLoading);
   setTimeout(function () {
     $.ajax({ url: "/Register/GetPosition", data: {}, type: "GET", datatype: "json" }).done(function (data) {
       $("#corp-position").empty();
@@ -399,14 +399,14 @@ async function ShowPositionName() {
       for (var i = 0; i < data.length; i++) {
         $("#corp-position").append('<option value="' + data[i].id + '">' + data[i].positionName + "</option>");
       }
-      $.unblockUI();
+      //$.unblockUI();
     }).fail(function () {
       alert("There was an Error When Loading Data...");
     });
   }, 100);
 }
 async function UserShowPositionName() {
-  $.blockUI(reloadLoading);
+  //$.blockUI(reloadLoading);
   setTimeout(function () {
     $.ajax(
       {
@@ -423,7 +423,7 @@ async function UserShowPositionName() {
         for (var i = 0; i < data.length; i++) {
           $("#user-position").append('<option value="' + data[i].id + '">' + data[i].positionName + "</option>");
         }
-        $.unblockUI();
+        //$.unblockUI();
       }).fail(function () {
         alert("There was an Error When Loading Data...");
       });
@@ -431,7 +431,7 @@ async function UserShowPositionName() {
 }
 
 async function _ShowMembershipOption() {
-  $.blockUI(reloadLoading);
+  //$.blockUI(reloadLoading);
   setTimeout(function () {
     $.ajax({ url: "/Corporate/GetMembershipList", data: {}, type: "GET", datatype: "json" }).done(function (data) {
       // 
@@ -441,14 +441,14 @@ async function _ShowMembershipOption() {
       for (var i = 0; i < data.length; i++) {
         $("#memtier-option").append('<option value="' + data[i].id + '">' + data[i].membershipName + "</option>");
       }
-      $.unblockUI();
+      //$.unblockUI();
     }).fail(function () {
       alert("There was an Error When Loading Data...");
     });
   }, 100);
 }
 async function ShowMembershipOption() {
-  $.blockUI(reloadLoading);
+  //$.blockUI(reloadLoading);
   setTimeout(function () {
       $.ajax({ url: "/Corporate/GetMembershipListOption", data: {}, type: "GET", datatype: "json" }).done(function (data) {
           //console.log(data);
@@ -461,14 +461,14 @@ async function ShowMembershipOption() {
         $("#mem-option").append('<option value="' + data[i].id + '">' + data[i].membershipName + "</option>");
         $("#corp-mem-option").append('<option value="' + data[i].id + '">' + data[i].membershipName + "</option>");
       }
-      $.unblockUI();
+      //$.unblockUI();
     }).fail(function () {
       alert("There was an Error When Loading Data...");
     });
   }, 100);
 }
 async function ShowCorporateOption() {
-  $.blockUI(reloadLoading);
+  //$.blockUI(reloadLoading);
   setTimeout(function () {
     $.ajax({ url: "/Corporate/GetCorporateList", data: {}, type: "GET", datatype: "json" }).done(function (data) {
       console.log("aw");
@@ -485,7 +485,7 @@ async function ShowCorporateOption() {
   }, 100);
 }
 async function ShowUserType() {
-  $.blockUI(reloadLoading);
+  //$.blockUI(reloadLoading);
   setTimeout(function () {
     $.ajax({ url: "/Register/GetUserType", data: {}, type: "GET", datatype: "json" }).done(function (data) {
       // 
@@ -494,7 +494,7 @@ async function ShowUserType() {
       for (var i = 0; i < data.length; i++) {
         $("#usertype-option").append('<option value="' + data[i].id + '">' + data[i].userType + "</option>");
       }
-      $.unblockUI();
+      //$.unblockUI();
     }).fail(function () {
       alert("There was an Error When Loading Data...");
     });
@@ -502,7 +502,7 @@ async function ShowUserType() {
 }
 
 async function ShowOptionMembership() {
-  $.blockUI(reloadLoading);
+  //$.blockUI(reloadLoading);
   setTimeout(function () {
     $.ajax({ url: "/Corporate/GetMembershipList", data: {}, type: "GET", datatype: "json" }).done(function (data) {
       $("#membership-option").empty();
@@ -510,14 +510,14 @@ async function ShowOptionMembership() {
       for (var i = 0; i < data.length; i++) {
         $("#membership-option").append('<option value="' + data[i].id + '">' + data[i].membershipName + "</option>");
       }
-      $.unblockUI();
+      //$.unblockUI();
     }).fail(function () {
       alert("There was an Error When Loading Data...");
     });
   }, 100);
 }
 async function CorpShowOptionMembership() {
-  $.blockUI(reloadLoading);
+  //$.blockUI(reloadLoading);
   setTimeout(function () {
     $.ajax({ url: "/Corporate/GetMembershipList", data: {}, type: "GET", datatype: "json" }).done(function (data) {
       $("#corp-mem-option").empty();
@@ -549,7 +549,7 @@ async function ShowBusinessAddress() {
   });
 }
 async function ShowCorporateOption() {
-  $.blockUI(reloadLoading);
+  //$.blockUI(reloadLoading);
   setTimeout(function () {
     $.ajax({ url: "/Corporate/GetCorporateList", data: {}, type: "GET", datatype: "json" }).done(function (data) {
       $("#user-corporate-option").empty();
@@ -557,14 +557,14 @@ async function ShowCorporateOption() {
       for (var i = 0; i < data.length; i++) {
         $("#user-corporate-option").append('<option value="' + data[i].id + '">' + data[i].corporateName + "</option>");
       }
-      $.unblockUI();
+      //$.unblockUI();
     }).fail(function () {
       alert("There was an Error When Loading Data...");
     });
   }, 100);
 }
 async function CorpShowCorporateOption() {
-  $.blockUI(reloadLoading);
+  //$.blockUI(reloadLoading);
   setTimeout(function () {
       $.ajax({ url: "/Corporate/GetCompanyList", data: {}, type: "GET", datatype: "json" }).done(function (data) { // // 
       $("#corp-corporate-option").empty();
@@ -572,7 +572,7 @@ async function CorpShowCorporateOption() {
       for (var i = 0; i < data.length; i++) {
         $("#corp-corporate-option").append('<option value="' + data[i].id + '">' + data[i].corporateName + "</option>");
       }
-      $.unblockUI();
+     // $.unblockUI();
     }).fail(function () {
       alert("There was an Error When Loading Data...");
     });

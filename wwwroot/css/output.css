@@ -1221,7 +1221,6 @@ table.myTableMedium tbody tr:nth-child(even) {
 
 table.privTable tbody tr:nth-child(even) {
   background-color: var(--shade);
-  background-color: red !important;
 }
 
 table.myTableMedium td {

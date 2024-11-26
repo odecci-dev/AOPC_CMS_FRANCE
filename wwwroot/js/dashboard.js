@@ -158,7 +158,7 @@ async function getComponyInformation() {
     //data.page = spanval;
     ////console.log(data);
     ////data.page = 0;
-    $.blockUI(reloadLoading);
+    //$.blockUI(reloadLoading);
     //$.ajax({
     //    url: '/Dashboard/PostCompanyInformation',
     //    async: false,
@@ -604,7 +604,7 @@ async function postNewUser() {
             }, 5000);
 
 
-            $.unblockUI();
+            //$.unblockUI();
         }
     });
 }
@@ -1443,7 +1443,7 @@ async function viewOfferDetails() {
     });
 }
 async function PostClickCountTop2() {
-    $.blockUI(reloadLoading);
+    //$.blockUI(reloadLoading);
     var data = {};
     data.day = day;
     data.startdate = nfcstartdate;

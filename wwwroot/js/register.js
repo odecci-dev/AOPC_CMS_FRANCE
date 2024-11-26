@@ -1,4 +1,4 @@
-﻿const { 04async } = require("postcss-js");
+﻿const { async } = require("postcss-js");
 var filtermodal = document.getElementById("filtermodal");
 
 
@@ -293,7 +293,7 @@ async function ShowFilter() {
     $('#user-registration-search').change(function () {
         
         var user = document.getElementById('user-registration-search').value;
-        console.log(user);
+        //console.log(user);
         spanval = "";
         companyNameFilter = user;
         getUserRegistration();
@@ -343,15 +343,25 @@ async function getUnregisteredList() {
 
 async function sendToAll() {
     var options = document.getElementsByName('unregistered');
-    
     $('#send-to-all').change(function () {
         if (document.getElementById("send-to-all").checked == true) {
-            $('div input').attr('checked', true); 
+            //$('.corporateOptionSendNotif').attr('checked', true);
+            $('.unregisteredOptions').not(this).prop('checked', this.checked);
         }
         else {
-            $('div input').attr('checked', false);
+            //$('form div input').attr('checked', false);
+
+            $('.unregisteredOptions').not(this).prop('checked', false);
         }
     });
+    //$('#send-to-all').change(function () {
+    //    if (document.getElementById("send-to-all").checked == true) {
+    //        $('div input').attr('checked', true); 
+    //    }
+    //    else {
+    //        $('div input').attr('checked', false);
+    //    }
+    //});
     $('#sendEmail').click(function () {
         var checkedEmail = document.querySelectorAll('input[id="unregistered"]:checked');
        
@@ -427,7 +437,7 @@ async function UserShowSelectFilter() {
             for (var i = 0; i < data.length; i++) {
                 $("#positionFilter").append('<option value="' + data[i].id + '">' + data[i].positionName + "</option>");
             }
-            $.unblockUI();
+            //$.unblockUI();
         }).fail(function () {
             alert("There was an Error When Loading Data...");
         });
@@ -444,7 +454,7 @@ async function UserShowSelectFilter() {
         for (var i = 0; i < data.length; i++) {
             $("#corporateFilter").append('<option value="' + data[i].id + '">' + data[i].corporateName + "</option>");
         }
-        $.unblockUI();
+        //$.unblockUI();
     }).fail(function () {
         alert("There was an Error When Loading Data...");
     });
