@@ -255,6 +255,7 @@ async function ShowMembershipList() {
                         '" data-dstart="' + row.dateStarted +
                         '" data-dend="' + row.dateEnded +
                         '" data-ucount="' + row.userCount +
+                        '" data-textColor="' + row.textCardColor +
                         '" data-vcount="' + row.vipCount + '" >' +
                         '<svg width="11" height="11" viewBox="0 0 11 11" fill="none"xmlns="http://www.w3.org/2000/svg">' +
                         '<path d="M5.02558 1.92456H1.89457C1.65732 1.92456 1.42978 2.0164 1.26201 2.17986C1.09425 2.34333 1 2.56504 1 2.79621V8.89779C1 9.12896 1.09425 9.35067 1.26201 9.51414C1.42978 9.6776 1.65732 9.76944 1.89457 9.76944H8.15659C8.39385 9.76944 8.62139 9.6776 8.78915 9.51414C8.95692 9.35067 9.05117 9.12896 9.05117 8.89779V5.847"' +

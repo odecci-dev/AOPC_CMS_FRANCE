@@ -934,7 +934,6 @@ async function displayFamilyMember() {
         columnDefs: [
             {
                 "className": "dt-left",
-                "width": 50,
                 "targets": "_all"
             }
         ],
@@ -962,7 +961,7 @@ async function displayFamilyMember() {
                         '<div class="approve-btn">' +
                         //"<input type='button' value='Approve' id='approveBtn' />" +
 
-                        '<a id="approveBtn"' +
+                        '<a id="corpapproveBtn"' +
                         '  data-id="' + data +
                         '" data-fullname="' + row.fullname +
                         '" data-relationship="' + row.relationship +
@@ -973,7 +972,7 @@ async function displayFamilyMember() {
                         '">' +
                         "<span >Approve</span>" + " </a>" +
 
-                        '<a id="declineBtn"' +
+                        '<a id="corpdeclineBtn"' +
                         '  data-id="' + data +
                         '" data-fullname="' + row.fullname +
                         '" data-relationship="' + row.relationship +
@@ -984,10 +983,10 @@ async function displayFamilyMember() {
                         '">' +
                         "<span >Decline</span>" + " </a>" +
                         "</div > ";
-                    if (row.applicationStatus == "Approved") {
+                    if (row.applicationStatus == "APPROVED") {
                         tdbuttons =
                             '<div class="approve-btn">' +
-                            '<a id="declineBtn"' +
+                            '<a id="corpdeclineBtn"' +
                             '  data-id="' + data +
                             '" data-fullname="' + row.fullname +
                             '" data-relationship="' + row.relationship +
@@ -1046,50 +1045,81 @@ async function editUserRegistration() {
         }
     });
 }
+var id;
+var familyMemberStatus;
 async function changeFamilyMemberStatus() {
     $('#family-member-table').on('click', '#approveBtn', function () {
-        var data = {};
-        var id = $(this).data("id");
-        var applicationStatus = "Approved";
-        data.id = id;
-        data.status = applicationStatus;
-        $.ajax({
-            url: '/Register/UpdateFamilyMember',
-            //async: false,
-            data: {
-                data: data,
-            },
-            type: "POST",
-            datatype: "json",
-            success: function () {
-                displayFamilyMember();
+        message = 'Are you sure you want to Approve?';
+        id = $(this).data("id");
+        familyMemberStatus = "APPROVED";
 
-            }
-
-        });
-        
+        updateFamilyMemberStatus();
     });
     $('#family-member-table').on('click', '#declineBtn', function () {
-        var data = {};
-        var id = $(this).data("id");
-        var applicationStatus = "Decline";
-        data.id = id;
-        data.status = applicationStatus;
-        $.ajax({
-            url: '/Register/UpdateFamilyMember',
-            //async: false,
-            data: {
-                data: data,
-            },
-            type: "POST",
-            datatype: "json",
-            success: function () {
-                displayFamilyMember();
-
-            }
-
-        });
+        message = 'Are you sure you want to Decline?';
+        id = $(this).data("id");
+        familyMemberStatus = "PENDING";
+        updateFamilyMemberStatus();
         
+    });
+    $('#corporate-family-member-table').on('click', '#corpapproveBtn', function () {
+        message = 'Are you sure you want to Approve?';
+        id = $(this).data("id");
+        familyMemberStatus = "APPROVED";
+        
+        updateFamilyMemberStatus();
+
+    });
+    $('#corporate-family-member-table').on('click', '#corpdeclineBtn', function () {
+        message = 'Are you sure you want to Decline?';
+        id = $(this).data("id");
+        familyMemberStatus = "PENDING";
+
+        updateFamilyMemberStatus();
+
+    });
+}
+async function updateFamilyMemberStatus() {
+
+    iziToast.question({
+        timeout: 20000,
+        close: false,
+        overlay: true,
+        id: 'question',
+        zindex: 999,
+        title: 'Confirmation',
+        message: message,
+        position: 'center',
+
+        buttons: [
+            ['<button><b>YES</b></button>', function (instance, toast) {
+                var data = {};
+                data.id = id;
+                data.status = familyMemberStatus;
+               
+                $.ajax({
+                    url: '/Register/UpdateFamilyMember',
+                    //async: false,
+                    data: {
+                        data: data,
+                    },
+                    type: "POST",
+                    datatype: "json",
+                    success: function () {
+                        displayFamilyMember();
+
+                    }
+
+                });
+                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+            }, true],
+            ['<button>NO</button>', function (instance, toast) {
+
+                instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+
+            }],
+        ]
     });
 }
 async function getCorporateRegistration() {
