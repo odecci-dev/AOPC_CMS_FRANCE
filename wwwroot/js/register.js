@@ -78,56 +78,56 @@ async function userRegistrationListTableLayout() {
 
     //});
     
-    var corpfamilyMemberTable = $('#corporate-family-member-table').DataTable({
-        "columnDefs": [
+    //corpfamilyMemberTable = $('#corporate-family-member-table').DataTable({
+    //    "columnDefs": [
 
-            { "width": "150px", "targets": 0 },
-            { "width": "150px", "targets": 1 },
-            { "width": "150px", "targets": 2 },
-            { "width": "200px", "targets": 3 },
-            { "width": "200px", "targets": 4 }
-        ],
-        "deferRender": true,
-        "bPaginate": false,
-        "bFilter": false,
-        "stripeClasses": [],
-        "ordering": false,
-        "ordering": false,
-        "info": false,
-        "bInfo": false,
-        "bAutoWidth": false,
-        "bLengthChange": false,
-        "aLengthMenu": [10],
-        "paging": true,
-        "searching": false,
-        "oLanguage": { "sZeroRecords": "", "sEmptyTable": "" }
+    //        { "width": "150px", "targets": 0 },
+    //        { "width": "150px", "targets": 1 },
+    //        { "width": "150px", "targets": 2 },
+    //        { "width": "200px", "targets": 3 },
+    //        { "width": "200px", "targets": 4 }
+    //    ],
+    //    "deferRender": true,
+    //    "bPaginate": false,
+    //    "bFilter": false,
+    //    "stripeClasses": [],
+    //    "ordering": false,
+    //    "ordering": false,
+    //    "info": false,
+    //    "bInfo": false,
+    //    "bAutoWidth": false,
+    //    "bLengthChange": false,
+    //    "aLengthMenu": [10],
+    //    "paging": true,
+    //    "searching": false,
+    //    "oLanguage": { "sZeroRecords": "", "sEmptyTable": "" }
 
-    });
-    familyMemberTable = $('#family-member-table').DataTable({
-        "columnDefs": [
+    //});
+    //familyMemberTable = $('#family-member-table').DataTable({
+    //    "columnDefs": [
 
-            { "width": "150px", "targets": 0 },
-            { "width": "150px", "targets": 1 },
-            { "width": "150px", "targets": 2 },
-            { "width": "200px", "targets": 3 },
-            { "width": "200px", "targets": 4 }
-        ],
-        "deferRender": true,
-        "bPaginate": false,
-        "bFilter": false,
-        "stripeClasses": [],
-        "ordering": false,
-        "ordering": false,
-        "info": false,
-        "bInfo": false,
-        "bAutoWidth": false,
-        "bLengthChange": false,
-        "aLengthMenu": [10],
-        "paging": true,
-        "searching": false,
-        "oLanguage": { "sZeroRecords": "", "sEmptyTable": "" }
+    //        { "width": "150px", "targets": 0 },
+    //        { "width": "150px", "targets": 1 },
+    //        { "width": "150px", "targets": 2 },
+    //        { "width": "200px", "targets": 3 },
+    //        { "width": "200px", "targets": 4 }
+    //    ],
+    //    "deferRender": true,
+    //    "bPaginate": false,
+    //    "bFilter": false,
+    //    "stripeClasses": [],
+    //    "ordering": false,
+    //    "ordering": false,
+    //    "info": false,
+    //    "bInfo": false,
+    //    "bAutoWidth": false,
+    //    "bLengthChange": false,
+    //    "aLengthMenu": [10],
+    //    "paging": true,
+    //    "searching": false,
+    //    "oLanguage": { "sZeroRecords": "", "sEmptyTable": "" }
 
-    });
+    //});
 }
 
 
@@ -724,137 +724,66 @@ async function getUserRegistration() {
         ]
     });
 }
+var familyMemTable;
+var corpfamilyMemTable;
 async function displayFamilyMember() {
     
     var data = {};
     data.FamilyUserId = FamilyUserId;
-    data.page = spanval;
-    data.pageSize = spanval;
+    //data.page = spanval;
+    //data.pageSize = spanval;
 
-    $.ajax({
-        url: '/Register/PostDisplayVIPFamilyMember',
-        //async: false,
-        data: {
-            data: data,
-        },
-        type: "POST",
-        datatype: "json",
-        success: function (data) {
-            //console.log(data);
-            familyMemberTable.clear().draw();
-
-            for (var i = 0; i < data[0].data.length; i++) {
-                if (data[0].data.length == 0) {
-                    familyMemberTables.style.display = "none";
-                }
-                else {
-                    familyMemberTables.style.display = "block";
-                }
-                var tdbuttons =
-                    '<div class="approve-btn">' +
-                    //"<input type='button' value='Approve' id='approveBtn' />" +
-
-                    '<a id="approveBtn"' +
-                    '  data-id="' + data[0].data[i].id +
-                    '" data-fullname="' + data[0].data[i].fullname +
-                    '" data-relationship="' + data[0].data[i].relationship +
-                    '" data-familyuserid="' + data[0].data[i].familyUserId +
-                    '" data-applicationstatus="' + data[0].data[i].applicationStatus +
-                    '" data-status="' + data[0].data[i].status +
-                    '" data-datecreated="' + data[0].data[i].dateCreated +
-                    '">' +
-                    "<span >Approve</span>" + " </a>" +
-
-                    '<a id="declineBtn"' +
-                    '  data-id="' + data[0].data[i].id +
-                    '" data-fullname="' + data[0].data[i].fullname +
-                    '" data-relationship="' + data[0].data[i].relationship +
-                    '" data-familyuserid="' + data[0].data[i].familyUserId +
-                    '" data-applicationstatus="' + data[0].data[i].applicationStatus +
-                    '" data-status="' + data[0].data[i].status +
-                    '" data-datecreated="' + data[0].data[i].dateCreated +
-                    '">' +
-                    "<span >Decline</span>" + " </a>" +
-                    "</div > ";
-                if (data[0].data[i].applicationStatus == "Approved") {
-                    tdbuttons =
-                        '<div class="approve-btn">' +
-                        '<a id="declineBtn"' +
-                        '  data-id="' + data[0].data[i].id +
-                        '" data-fullname="' + data[0].data[i].fullname +
-                        '" data-relationship="' + data[0].data[i].relationship +
-                        '" data-familyuserid="' + data[0].data[i].familyUserId +
-                        '" data-applicationstatus="' + data[0].data[i].applicationStatus +
-                        '" data-status="' + data[0].data[i].status +
-                        '" data-datecreated="' + data[0].data[i].dateCreated +
-                        '">' +
-                        "<span >Decline</span>" + " </a>" +
-                        "</div > ";
-                }
-                $('#family-member-table').dataTable().fnAddData([
-                    '<td><p>' + data[0].data[i].fullname + '</p></td>',
-                    '<td><p>' + data[0].data[i].relationship + '</p></td>',
-                    '<td><p>' + data[0].data[i].applicationStatus + '</p></td>',
-                    '<td><p>' + data[0].data[i].dateCreated + '</p></td>',
-                    //'<td><p>' + data[0].data[i].status + '</p></td>',
-                    '<td><p>' + tdbuttons + '</p></td>'
-                ]);
-                $('#corporate-family-member-table').dataTable().fnAddData([
-                    '<td><p>' + data[0].data[i].fullname + '</p></td>',
-                    '<td><p>' + data[0].data[i].relationship + '</p></td>',
-                    '<td><p>' + data[0].data[i].applicationStatus + '</p></td>',
-                    '<td><p>' + data[0].data[i].dateCreated + '</p></td>',
-                    //'<td><p>' + data[0].data[i].status + '</p></td>',
-                    '<td><p>' + tdbuttons + '</p></td>'
-                ]);
-
-            }
-
-        }
-
-    });
-
-    //new DataTable('#family-member-table', {
-    //    ajax: {
-    //        url: "/Register/PostDisplayVIPFamilyMember",
-    //        data: {
-    //            data: data,
-    //        },
-    //        type: "POST",
-    //        dataType: "json",
-    //        processing: true,
-    //        serverSide: true,
-    //        complete: function (xhr) {
-    //            //console.log(xhr);
-    //        },
-    //        error: function (err) {
-    //            //alert(err.responseText);
-    //            alert("There was an Error When Loading Data...");
-    //        }
+    //$.ajax({
+    //    url: '/Register/PostDisplayVIPFamilyMember',
+    //    //async: false,
+    //    data: {
+    //        data: data,
     //    },
-    //    columnDefs: [
-    //        { "width": "150px", "targets": 2 },
-    //        { "width": "150px", "targets": 4 }
-    //    ],
-    //    columns: [
-    //        {
-    //            data: 'fname',
-    //            render: function (data, type, row) {
-    //                var tdbuttons =
+    //    type: "POST",
+    //    datatype: "json",
+    //    success: function (data) {
+    //        //console.log(data);
+    //        familyMemberTable.clear().draw();
+    //        corpfamilyMemberTable.clear().draw();
+    //        for (var i = 0; i < data[0].data.length; i++) {
+    //            //if (data[0].data.length == 0) {
+    //            //    familyMemberTables.style.display = "none";
+    //            //    corpfamilyMemberTables.style.display = "none";
+    //            //}
+    //            //else {
+    //            //    familyMemberTables.style.display = "block";
+    //            //    corpfamilyMemberTables.style.display = "block";
+
+    //            //}
+    //            var tdbuttons =
+    //                '<div class="approve-btn">' +
+    //                //"<input type='button' value='Approve' id='approveBtn' />" +
+
+    //                '<a id="approveBtn"' +
+    //                '  data-id="' + data[0].data[i].id +
+    //                '" data-fullname="' + data[0].data[i].fullname +
+    //                '" data-relationship="' + data[0].data[i].relationship +
+    //                '" data-familyuserid="' + data[0].data[i].familyUserId +
+    //                '" data-applicationstatus="' + data[0].data[i].applicationStatus +
+    //                '" data-status="' + data[0].data[i].status +
+    //                '" data-datecreated="' + data[0].data[i].dateCreated +
+    //                '">' +
+    //                "<span >Approve</span>" + " </a>" +
+
+    //                '<a id="declineBtn"' +
+    //                '  data-id="' + data[0].data[i].id +
+    //                '" data-fullname="' + data[0].data[i].fullname +
+    //                '" data-relationship="' + data[0].data[i].relationship +
+    //                '" data-familyuserid="' + data[0].data[i].familyUserId +
+    //                '" data-applicationstatus="' + data[0].data[i].applicationStatus +
+    //                '" data-status="' + data[0].data[i].status +
+    //                '" data-datecreated="' + data[0].data[i].dateCreated +
+    //                '">' +
+    //                "<span >Decline</span>" + " </a>" +
+    //                "</div > ";
+    //            if (data[0].data[i].applicationStatus == "Approved") {
+    //                tdbuttons =
     //                    '<div class="approve-btn">' +
-    //                    //"<input type='button' value='Approve' id='approveBtn' />" +
-
-    //                    '<a id="approveBtn"' +
-    //                    '  data-id="' + data[0].data[i].id +
-    //                    '" data-fullname="' + data[0].data[i].fullname +
-    //                    '" data-relationship="' + data[0].data[i].relationship +
-    //                    '" data-familyuserid="' + data[0].data[i].familyUserId +
-    //                    '" data-applicationstatus="' + data[0].data[i].applicationStatus +
-    //                    '" data-status="' + data[0].data[i].status +
-    //                    '" data-datecreated="' + data[0].data[i].dateCreated +
-    //                    '">' +
-    //                    "<span >Approve</span>" + " </a>" +
-
     //                    '<a id="declineBtn"' +
     //                    '  data-id="' + data[0].data[i].id +
     //                    '" data-fullname="' + data[0].data[i].fullname +
@@ -866,48 +795,217 @@ async function displayFamilyMember() {
     //                    '">' +
     //                    "<span >Decline</span>" + " </a>" +
     //                    "</div > ";
-    //                if (data[0].data[i].applicationStatus == "Approved") {
-    //                    tdbuttons =
-    //                        '<div class="approve-btn">' +
-    //                        '<a id="declineBtn"' +
-    //                        '  data-id="' + data[0].data[i].id +
-    //                        '" data-fullname="' + data[0].data[i].fullname +
-    //                        '" data-relationship="' + data[0].data[i].relationship +
-    //                        '" data-familyuserid="' + data[0].data[i].familyUserId +
-    //                        '" data-applicationstatus="' + data[0].data[i].applicationStatus +
-    //                        '" data-status="' + data[0].data[i].status +
-    //                        '" data-datecreated="' + data[0].data[i].dateCreated +
-    //                        '">' +
-    //                        "<span >Decline</span>" + " </a>" +
-    //                        "</div > ";
-    //                }
-
-    //                return tdbuttons;
     //            }
-    //        },
-    //        {
-    //            data: 'username'
-    //        },
-    //        {
-    //            data: 'email'
-    //        },
-    //        {
-    //            data: 'gender'
-    //        },
-    //        {
-    //            data: 'corporatename'
-    //        },
-    //        {
-    //            data: 'position'
-    //        },
-    //        {
-    //            data: 'status'
-    //        },
-    //        {
-    //            data: 'dateCreated'
+    //            $('#family-member-table').dataTable().fnAddData([
+    //                '<td><p>' + data[0].data[i].fullname + '</p></td>',
+    //                '<td><p>' + data[0].data[i].relationship + '</p></td>',
+    //                '<td><p>' + data[0].data[i].applicationStatus + '</p></td>',
+    //                '<td><p>' + data[0].data[i].dateCreated + '</p></td>',
+    //                //'<td><p>' + data[0].data[i].status + '</p></td>',
+    //                '<td><p>' + tdbuttons + '</p></td>'
+    //            ]);
+    //            $('#corporate-family-member-table').dataTable().fnAddData([
+    //                '<td><p>' + data[0].data[i].fullname + '</p></td>',
+    //                '<td><p>' + data[0].data[i].relationship + '</p></td>',
+    //                '<td><p>' + data[0].data[i].applicationStatus + '</p></td>',
+    //                '<td><p>' + data[0].data[i].dateCreated + '</p></td>',
+    //                //'<td><p>' + data[0].data[i].status + '</p></td>',
+    //                '<td><p>' + tdbuttons + '</p></td>'
+    //            ]);
+
     //        }
-    //    ]
+
+    //    }
+
     //});
+    if (DataTable.isDataTable('#family-member-table')) {
+        familyMemTable.destroy();
+    }
+    if (DataTable.isDataTable('#corporate-family-member-table')) {
+        corpfamilyMemTable.destroy();
+    }
+    familyMemTable = new DataTable('#family-member-table', {
+        ajax: {
+            url: "/Register/PostDisplayVIPFamilyMember",
+            data: {
+                data: data,
+            },
+            type: "POST",
+            dataType: "json",
+            processing: true,
+            serverSide: true,
+            complete: function (xhr) {
+                //console.log(xhr);
+            },
+            error: function (err) {
+                //alert(err.responseText);
+                alert("There was an Error When Loading Data...");
+            }
+        },
+        columnDefs: [
+            { "width": "150px", "targets": 2 },
+            { "width": "150px", "targets": 4 }
+        ],
+        columns: [
+            
+            {
+                data: 'fullname'
+            },
+            {
+                data: 'relationship'
+            },
+            {
+                data: 'applicationStatus'
+            },
+            {
+                data: 'dateCreated',
+                render: function (data, type, row) {
+                    return type;
+                }
+            },
+            {
+                data: 'id',
+                render: function (data, type, row) {
+                    var tdbuttons =
+                        '<div class="approve-btn">' +
+                        //"<input type='button' value='Approve' id='approveBtn' />" +
+
+                        '<a id="approveBtn"' +
+                        '  data-id="' + data +
+                        '" data-fullname="' + row.fullname +
+                        '" data-relationship="' + row.relationship +
+                        '" data-familyuserid="' + row.familyUserId +
+                        '" data-applicationstatus="' + row.applicationStatus +
+                        '" data-status="' + row.status +
+                        '" data-datecreated="' + row.dateCreated +
+                        '">' +
+                        "<span >Approve</span>" + " </a>" +
+
+                        '<a id="declineBtn"' +
+                        '  data-id="' + data +
+                        '" data-fullname="' + row.fullname +
+                        '" data-relationship="' + row.relationship +
+                        '" data-familyuserid="' + row.familyUserId +
+                        '" data-applicationstatus="' + row.applicationStatus +
+                        '" data-status="' + row.status +
+                        '" data-datecreated="' + row.dateCreated +
+                        '">' +
+                        "<span >Decline</span>" + " </a>" +
+                        "</div > ";
+                    if (row.applicationStatus == "Approved") {
+                        tdbuttons =
+                            '<div class="approve-btn">' +
+                            '<a id="declineBtn"' +
+                            '  data-id="' + data +
+                            '" data-fullname="' + row.fullname +
+                            '" data-relationship="' + row.relationship +
+                            '" data-familyuserid="' + row.familyUserId +
+                            '" data-applicationstatus="' + row.applicationStatus +
+                            '" data-status="' + row.status +
+                            '" data-datecreated="' + row.dateCreated +
+                            '">' +
+                            "<span >Decline</span>" + " </a>" +
+                            "</div > ";
+                    }
+
+                    return tdbuttons;
+                }
+            },
+        ]
+    });
+    corpfamilyMemTable = new DataTable('#corporate-family-member-table', {
+        ajax: {
+            url: "/Register/PostDisplayVIPFamilyMember",
+            data: {
+                data: data,
+            },
+            type: "POST",
+            dataType: "json",
+            processing: true,
+            serverSide: true,
+            complete: function (xhr) {
+                //console.log(xhr);
+            },
+            error: function (err) {
+                //alert(err.responseText);
+                alert("There was an Error When Loading Data...");
+            }
+        },
+        columnDefs: [
+            {
+                "className": "dt-left",
+                "width": 50,
+                "targets": "_all"
+            }
+        ],
+        columns: [
+
+            {
+                data: 'fullname'
+            },
+            {
+                data: 'relationship'
+            },
+            {
+                data: 'applicationStatus'
+            },
+            {
+                data: 'dateCreated',
+                render: function (data, type, row) {
+                    return data.substring(0, 10);
+                }
+            },
+            {
+                data: 'id',
+                render: function (data, type, row) {
+                    var tdbuttons =
+                        '<div class="approve-btn">' +
+                        //"<input type='button' value='Approve' id='approveBtn' />" +
+
+                        '<a id="approveBtn"' +
+                        '  data-id="' + data +
+                        '" data-fullname="' + row.fullname +
+                        '" data-relationship="' + row.relationship +
+                        '" data-familyuserid="' + row.familyUserId +
+                        '" data-applicationstatus="' + row.applicationStatus +
+                        '" data-status="' + row.status +
+                        '" data-datecreated="' + row.dateCreated +
+                        '">' +
+                        "<span >Approve</span>" + " </a>" +
+
+                        '<a id="declineBtn"' +
+                        '  data-id="' + data +
+                        '" data-fullname="' + row.fullname +
+                        '" data-relationship="' + row.relationship +
+                        '" data-familyuserid="' + row.familyUserId +
+                        '" data-applicationstatus="' + row.applicationStatus +
+                        '" data-status="' + row.status +
+                        '" data-datecreated="' + row.dateCreated +
+                        '">' +
+                        "<span >Decline</span>" + " </a>" +
+                        "</div > ";
+                    if (row.applicationStatus == "Approved") {
+                        tdbuttons =
+                            '<div class="approve-btn">' +
+                            '<a id="declineBtn"' +
+                            '  data-id="' + data +
+                            '" data-fullname="' + row.fullname +
+                            '" data-relationship="' + row.relationship +
+                            '" data-familyuserid="' + row.familyUserId +
+                            '" data-applicationstatus="' + row.applicationStatus +
+                            '" data-status="' + row.status +
+                            '" data-datecreated="' + row.dateCreated +
+                            '">' +
+                            "<span >Decline</span>" + " </a>" +
+                            "</div > ";
+                    }
+
+                    return tdbuttons;
+                }
+            },
+        ],
+            processing: true,
+    });
 
 
 }
@@ -1172,7 +1270,8 @@ async function getCorporateRegistration() {
                         'data-corporategender="' + row.gender + '"' +
                         'data-utype="' + row.userType + '"' +
                         'data-corporateid="' + row.corporateID + '"' +
-                        'data-displayimg="' + row.filePath + '"' +
+                        'data-corpdisplayimg="' + row.filePath + '"' +
+                        'data-membershipid="' + row.membershipID + '"' +
                         'data-vipstats="' + row.isVIP + '"> ' +
                         '<svg width="11" height="11" viewBox="0 0 11 11" fill="none" xmlns="http://www.w3.org/2000/svg">' +
                         '<path d="M5.02558 1.92456H1.89457C1.65732 1.92456 1.42978 2.0164 1.26201 2.17986C1.09425 2.34333 1 2.56504 1 2.79621V8.89779C1 9.12896 1.09425 9.35067 1.26201 9.51414C1.42978 9.6776 1.65732 9.76944 1.89457 9.76944H8.15659C8.39385 9.76944 8.62139 9.6776 8.78915 9.51414C8.95692 9.35067 9.05117 9.12896 9.05117 8.89779V5.847" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>' +
