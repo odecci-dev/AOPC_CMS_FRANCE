@@ -146,6 +146,13 @@ async function companyInformationShowFilter() {
     });
 }
 
+$('#nu-clear').click(function () {
+    day = 0;
+    startdate = lastWeekDate;
+    enddate = currentDate;
+    document.getElementById('nur').value = 0;
+    postNewUser();
+});
 async function getComponyInformation() {
     
     //var data = {};
@@ -1552,7 +1559,8 @@ async function PostClickCountTop2() {
 }
 async function PostCallToAction() {
     var data = {};
-    //cat = $('#cta-opt').val();
+    cat = $('#cta-opt').val();
+    day = $('#cta-day').val();
     data.day = day;
     data.startdate = ctastartdate;
     data.enddate = ctaendtdate;
@@ -1693,6 +1701,7 @@ async function dateFilter() {
         storeday = 0;
         wellnessday = 0;
         offerday = 0;
+        document.getElementById('cta-day').value = 0;
         //console.log(type);
         if (type == 1) {
             postNewUser();
@@ -1744,10 +1753,22 @@ async function dateFilter() {
     $('#cta-opt').change(function () {
         PostCallToAction();
     });
+    $('#cta-clear').click(function () {
+        document.getElementById('cta-day').value = 0;
+        document.getElementById('cta-opt').value = 0;
+        document.getElementById("dateFrom").value = null;
+        document.getElementById("dateTo").value = null;
+        ctastartdate = null;
+        ctaenddate = null;
+        PostCallToAction();
+        //alert("Hello");
+    });
     $('#nur').change(function () {
         day = document.getElementById('nur').value;
         startdate = null;
         enddate = null;
+        document.getElementById("dateFrom").value = lastWeekDate;
+        document.getElementById("dateTo").value = currentDate;
         postNewUser();
     });
     $('#cnt-opt').change(function () {
@@ -1797,6 +1818,8 @@ async function dateFilter() {
 
     $('#cta-day').change(function () {
         day = document.getElementById('cta-day').value;
+        document.getElementById("dateFrom").value = null;
+        document.getElementById("dateTo").value = null;
         startdate = null;
         enddate = null;
         PostCallToAction();

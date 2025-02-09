@@ -1540,3 +1540,96 @@ async function getOysterAdmin() {
         ]
     });
 }
+
+function createUser() {
+    let allownotif = 0;
+    let random = (Math.random() + 1).toString(36).substring(4);
+    const uuid = random;
+    var filename = $("#img").val().replace(/.*(\/|\\)/, '');
+    var imgCheck = $("#img-check").val().replace("https://www.alfardanoysterprivilegeclub.com/assets/img/", "").replace("%20", " ");
+    var data = {};
+    var fileUpload = $("#img").get(0);
+    console.log(imgCheck);
+    var files = fileUpload.files;
+    const formData = new FormData();
+    if (files[0]) {
+        let newFileName = uuid + "." + files[0].name.split('.').pop();
+        const newFile = new File([files[0]], newFileName, { type: files[0].type });
+        formData.append('file', newFile);
+        filename = newFileName;
+    }
+    else {
+        formData.append('file', files[0]);
+
+
+        if (imgCheck == "" || imgCheck == null) {
+            filename = img_edit;
+        }
+        else {
+            // filename = "/Uploads/" + imgCheck;
+            filename = imgCheck;
+        }
+    }
+    if ($("#checkp").is(':checked')) {
+        //console.log("check");
+        allownotif = 1;
+    }
+    else {
+        //console.log("umcheck");
+        allownotif = 0;
+    }
+    // console.log(filename);
+    var data = {};
+    data.id = i_id;
+    data.EmployeeID = $('#empid').val();
+    data.Fname = $('#fname').val();
+    data.Lname = $('#lname').val();
+    data.Username = $('#user').val();
+    data.gender = $('#gender').val();
+    data.Email = $('#email').val();
+    data.positionID = $('#user-position').val();
+    data.CorporateID = $('#user-corporate-option').val(); 
+    data.Active = "2";
+    data.Type = 3;
+    data.AllowEmailNotif = allownotif;
+    data.FilePath = filename;
+    data.isVIP = $('#vip-option').val();
+    $.ajax({
+        url: '/Register/SaveUserInfo',
+        data: {
+            data: data
+        },
+        type: "POST",
+        datatype: "json",
+    }).done(function (response) {
+        if (response.stats == "Error in Registration" || response.stats == "User Information Already Used!") {
+            notifyMsg('Warning!', response.stats, 'yellow', 'fas fa-exclamation-triangle');
+            $("#empid").focus();
+        }
+        else {
+            $.ajax({
+                url: '/Register/UploadFile',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                }
+            });
+            notifyMsg('Success!', response.stats, 'green', 'fas fa-check');
+
+            clear();
+            $("#h-close").click();
+            getUserRegistration();
+            // cms_paginationCorpUser(spanval, filtername, posId, corpid);
+
+        }
+
+        $.unblockUI();
+        getUserRegistration();
+
+    }).fail(function () {
+        alert("There was an Error When Loading Data...");
+    });
+    instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+}
