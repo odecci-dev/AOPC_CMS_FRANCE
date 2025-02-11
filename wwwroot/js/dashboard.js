@@ -153,6 +153,12 @@ $('#nu-clear').click(function () {
     document.getElementById('nur').value = 0;
     postNewUser();
 });
+$('#mcc-clear').click(function () {
+    day = 0;
+    startdate = null;
+    enddate = currentDate;
+    PostClickCountTop2();
+});
 async function getComponyInformation() {
     
     //var data = {};
@@ -1525,7 +1531,9 @@ async function PostClickCountTop2() {
     //        });
     //}, 100);
     //console.log(data);
-
+    if (DataTable.isDataTable('#tbl_cnt')) {
+        cntTable.destroy();
+    }
    
     cntTable = new DataTable('#tbl_cnt', {
         ajax: {
