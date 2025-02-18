@@ -61,15 +61,14 @@ var offerday = 0;
 var offerstartdate = lastWeekDate;
 var offerenddate = currentDate;
 
-// news feed clicks variable
-var nfcday = 0;
-var nfcstartdate = null;
-var nfcendtdate = null;
+
 
 // call to action variable
-var ctastartdate = null;
-var ctaendtdate = null;
-var cat = "0";
+//var ctastartdate = null;
+//var ctaendtdate = null;
+//var ctaday = "0";
+//var ctacategory = "0";
+//var cat = "0";
 
 //Number of Days Filter
 var days = 0;
@@ -1754,11 +1753,13 @@ async function dateFilter() {
             day = 0;
             ctastartdate = startdate;
             ctaendtdate = enddate;
+            ctaday = "0";
             ctaTable.destroy();
             PostCallToAction();
         }
     });
     $('#cta-opt').change(function () {
+        
         PostCallToAction();
     });
     $('#cta-clear').click(function () {
@@ -1768,6 +1769,7 @@ async function dateFilter() {
         document.getElementById("dateTo").value = null;
         ctastartdate = null;
         ctaenddate = null;
+        ctaday = "0";
         PostCallToAction();
         //alert("Hello");
     });
@@ -1783,7 +1785,7 @@ async function dateFilter() {
         day = document.getElementById('cnt-opt').value;
         nfcstartdate = null;
         nfcenddate = null;
-
+        nfcday = day;
         cntTable.destroy();
         PostClickCountTop2();
     });
@@ -1830,6 +1832,10 @@ async function dateFilter() {
         document.getElementById("dateTo").value = null;
         startdate = null;
         enddate = null;
+        ctastartdate = null;
+        ctaenddate = null;
+        ctaday = day;
+        console.log(ctastartdate + " " + ctaenddate + " " + ctaday);
         PostCallToAction();
     });
      
