@@ -1602,7 +1602,7 @@ function createUser() {
         type: "POST",
         datatype: "json",
     }).done(function (response) {
-        if (response.stats == "Error in Registration" || response.stats == "User Information Already Used!") {
+        if (response.stats == "Error in Registration" || response.stats == "User Information Already Used!" || response.stats == "User registration limit reached, no additional users can be registered at this time!") {
             notifyMsg('Warning!', response.stats, 'yellow', 'fas fa-exclamation-triangle');
             $("#empid").focus();
         }
