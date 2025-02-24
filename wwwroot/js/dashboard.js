@@ -803,6 +803,10 @@ async function viewRestoDetails() {
             {
                 data: 'total'
             }
+            //,
+            //{
+            //    data: 'address'
+            //}
         ]
     });
 
@@ -971,6 +975,9 @@ async function viewHotelDetails() {
                 },
                 {
                     data: 'total'
+                },
+                {
+                    data: 'address'
                 }
             ]
         });
@@ -1143,6 +1150,9 @@ async function viewStoreDetails() {
                 },
                 {
                     data: 'total'
+                },
+                {
+                    data: 'address'
                 }
             ]
         });
@@ -1313,6 +1323,9 @@ async function viewWellnessDetails() {
                 },
                 {
                     data: 'total'
+                },
+                {
+                    data: 'address'
                 }
             ]
         });
@@ -1484,6 +1497,9 @@ async function viewOfferDetails() {
                 },
                 {
                     data: 'total'
+                },
+                {
+                    data: 'address'
                 }
             ]
         });
