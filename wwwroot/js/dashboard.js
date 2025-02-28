@@ -1571,7 +1571,17 @@ async function PostClickCountTop2() {
         columns: [
             {
                 title: "Module",
-                data: 'module'
+                data: 'module',
+                render: function (data, type, row) {
+                    if (data == "News") {
+
+                        return "Offerings";
+                    }
+                    else {
+
+                        return data;
+                    }
+                }
             },
             {
                 title: "Count",
