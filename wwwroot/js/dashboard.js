@@ -1577,6 +1577,10 @@ async function PostClickCountTop2() {
 
                         return "Offerings";
                     }
+                    else if (data == "Hotel") {
+
+                        return "Hotels";
+                    }
                     else {
 
                         return data;
