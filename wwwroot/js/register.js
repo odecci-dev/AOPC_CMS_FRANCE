@@ -785,94 +785,7 @@ async function displayFamilyMember() {
     
     var data = {};
     data.FamilyUserId = FamilyUserId;
-    //data.page = spanval;
-    //data.pageSize = spanval;
-
-    //$.ajax({
-    //    url: '/Register/PostDisplayVIPFamilyMember',
-    //    //async: false,
-    //    data: {
-    //        data: data,
-    //    },
-    //    type: "POST",
-    //    datatype: "json",
-    //    success: function (data) {
-    //        //console.log(data);
-    //        familyMemberTable.clear().draw();
-    //        corpfamilyMemberTable.clear().draw();
-    //        for (var i = 0; i < data[0].data.length; i++) {
-    //            //if (data[0].data.length == 0) {
-    //            //    familyMemberTables.style.display = "none";
-    //            //    corpfamilyMemberTables.style.display = "none";
-    //            //}
-    //            //else {
-    //            //    familyMemberTables.style.display = "block";
-    //            //    corpfamilyMemberTables.style.display = "block";
-
-    //            //}
-    //            var tdbuttons =
-    //                '<div class="approve-btn">' +
-    //                //"<input type='button' value='Approve' id='approveBtn' />" +
-
-    //                '<a id="approveBtn"' +
-    //                '  data-id="' + data[0].data[i].id +
-    //                '" data-fullname="' + data[0].data[i].fullname +
-    //                '" data-relationship="' + data[0].data[i].relationship +
-    //                '" data-familyuserid="' + data[0].data[i].familyUserId +
-    //                '" data-applicationstatus="' + data[0].data[i].applicationStatus +
-    //                '" data-status="' + data[0].data[i].status +
-    //                '" data-datecreated="' + data[0].data[i].dateCreated +
-    //                '">' +
-    //                "<span >Approve</span>" + " </a>" +
-
-    //                '<a id="declineBtn"' +
-    //                '  data-id="' + data[0].data[i].id +
-    //                '" data-fullname="' + data[0].data[i].fullname +
-    //                '" data-relationship="' + data[0].data[i].relationship +
-    //                '" data-familyuserid="' + data[0].data[i].familyUserId +
-    //                '" data-applicationstatus="' + data[0].data[i].applicationStatus +
-    //                '" data-status="' + data[0].data[i].status +
-    //                '" data-datecreated="' + data[0].data[i].dateCreated +
-    //                '">' +
-    //                "<span >Decline</span>" + " </a>" +
-    //                "</div > ";
-    //            if (data[0].data[i].applicationStatus == "Approved") {
-    //                tdbuttons =
-    //                    '<div class="approve-btn">' +
-    //                    '<a id="declineBtn"' +
-    //                    '  data-id="' + data[0].data[i].id +
-    //                    '" data-fullname="' + data[0].data[i].fullname +
-    //                    '" data-relationship="' + data[0].data[i].relationship +
-    //                    '" data-familyuserid="' + data[0].data[i].familyUserId +
-    //                    '" data-applicationstatus="' + data[0].data[i].applicationStatus +
-    //                    '" data-status="' + data[0].data[i].status +
-    //                    '" data-datecreated="' + data[0].data[i].dateCreated +
-    //                    '">' +
-    //                    "<span >Decline</span>" + " </a>" +
-    //                    "</div > ";
-    //            }
-    //            $('#family-member-table').dataTable().fnAddData([
-    //                '<td><p>' + data[0].data[i].fullname + '</p></td>',
-    //                '<td><p>' + data[0].data[i].relationship + '</p></td>',
-    //                '<td><p>' + data[0].data[i].applicationStatus + '</p></td>',
-    //                '<td><p>' + data[0].data[i].dateCreated + '</p></td>',
-    //                //'<td><p>' + data[0].data[i].status + '</p></td>',
-    //                '<td><p>' + tdbuttons + '</p></td>'
-    //            ]);
-    //            $('#corporate-family-member-table').dataTable().fnAddData([
-    //                '<td><p>' + data[0].data[i].fullname + '</p></td>',
-    //                '<td><p>' + data[0].data[i].relationship + '</p></td>',
-    //                '<td><p>' + data[0].data[i].applicationStatus + '</p></td>',
-    //                '<td><p>' + data[0].data[i].dateCreated + '</p></td>',
-    //                //'<td><p>' + data[0].data[i].status + '</p></td>',
-    //                '<td><p>' + tdbuttons + '</p></td>'
-    //            ]);
-
-    //        }
-
-    //    }
-
-    //});
+    
     if (DataTable.isDataTable('#family-member-table')) {
         familyMemTable.destroy();
     }
@@ -1060,8 +973,6 @@ async function displayFamilyMember() {
         ],
             processing: true,
     });
-
-
 }
 async function editUserRegistration() {
     var familyMemberTables = document.getElementById("family-member"); 
